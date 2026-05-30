@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Casa del Lupino Bianco — Piedmont, Italy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <header id="nav">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">
+        <img src="images/logo.png" alt="Casa del Lupino Bianco" />
+        <span>Casa del Lupino Bianco</span>
+      </a>
+      <nav>
+        <a href="#pictures">Pictures</a>
+        <a href="#activities">Activities</a>
+        <a href="#rental">Rental</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button class="burger" aria-label="Menu">&#9776;</button>
+    </div>
+    <div class="mobile-menu">
+      <a href="#pictures">Pictures</a>
+      <a href="#activities">Activities</a>
+      <a href="#rental">Rental</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg" style="background-image:url('images/gallery/view_IMG_1641.jpg')"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <img src="images/logo.png" alt="Logo" class="hero-logo" />
+      <h1>Casa del Lupino Bianco</h1>
+      <p class="hero-tagline">Your retreat in the heart of Piedmont</p>
+      <a href="#pictures" class="btn-outline">Discover</a>
+    </div>
+    <a href="#pictures" class="scroll-hint" aria-label="Scroll down">&#8964;</a>
+  </section>
+
+  <!-- PICTURES -->
+  <section id="pictures">
+    <div class="section-header">
+      <h2>The House &amp; Surroundings</h2>
+      <p class="section-sub">A private estate nestled among the vineyards and hazelnut groves of Castel Boglione.</p>
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="view">View</button>
+      <button class="filter-btn" data-filter="house">House</button>
+      <button class="filter-btn" data-filter="pool">Pool</button>
+      <button class="filter-btn" data-filter="livingroom">Living Room</button>
+      <button class="filter-btn" data-filter="kitchen">Kitchen</button>
+      <button class="filter-btn" data-filter="winecellar">Wine Cellar</button>
+    </div>
+
+    <div class="gallery" id="gallery">
+      <!-- view -->
+      <div class="gallery-item" data-cat="view"><img src="images/gallery/view_IMG_1641.jpg" alt="View" loading="lazy" /></div>
+      <div class="gallery-item" data-cat="view"><img src="images/gallery/view_IMG_0906.jpg" alt="View" loading="lazy" /></div>
+      <div class="gallery-item" data-cat="view"><img src="images/gallery/view_IMG_0907.jpg" alt="View" loading="lazy" /></div>
+      <div class="gallery-item" data-cat="view"><img src="images/gallery/view_IMG_0908.jpg" alt="View" loading="lazy" /></div>
+      <div class="gallery-item" data-cat="view"><img src="images/gallery/view_IMG_0911.jpg" alt="View" loading="lazy" /></div>
+      <div class="gallery-item" data-cat="view"><img src="images/gallery/view_IMG_8143.jpg" alt="View" loading="lazy" /></div>
+      <div class="gallery-item" data-cat="view"><img src="images/gallery/view_IMG_20250911_191842.jpg" alt="View at dusk" loading="lazy" /></div>
+      <div class="gallery-item" data-cat="view"><img src="images/gallery/view_IMG_20250911_191909.jpg" alt="View at dusk" loading="lazy" /></div>
+      <!-- house -->
+      <div class="gallery-item" data-cat="house"><img src="images/gallery/house_IMG_0902.jpg" alt="House" loading="lazy" /></div>
+      <div class="gallery-item" data-cat="house"><img src="images/gallery/house_IMG_0905.jpg" alt="House" loading="lazy" /></div>
+      <div class="gallery-item" data-cat="house"><img src="images/gallery/house_IMG_1627.jpg" alt="House" loading="lazy" /></div>
+      <div class="gallery-item" data-cat="house"><img src="images/gallery/misc_IMG_0904.jpg" alt="House" loading="lazy" /></div>
+      <div class="gallery-item" data-cat="house"><img src="images/gallery/misc_IMG_0910.jpg" alt="House" loading="lazy" /></div>
+      <div class="gallery-item" data-cat="house"><img src="images/gallery/misc_IMG_0913.jpg" alt="House" loading="lazy" /></div>
+      <div class="gallery-item" data-cat="house"><img src="images/gallery/misc_IMG_1638.jpg" alt="House" loading="lazy" /></div>
+      <!-- pool -->
+      <div class="gallery-item" data-cat="pool"><img src="images/gallery/pool_IMG_0903.jpg" alt="Pool" loading="lazy" /></div>
+      <div class="gallery-item" data-cat="pool"><img src="images/gallery/pool_IMG_0912.jpg" alt="Pool" loading="lazy" /></div>
+      <div class="gallery-item" data-cat="pool"><img src="images/gallery/pool_IMG_8101.jpg" alt="Pool" loading="lazy" /></div>
+      <div class="gallery-item" data-cat="pool"><img src="images/gallery/pool_IMG_8115.jpg" alt="Pool" loading="lazy" /></div>
+      <!-- living room -->
+      <div class="gallery-item" data-cat="livingroom"><img src="images/gallery/livingroom_IMG_1651.jpg" alt="Living Room" loading="lazy" /></div>
+      <div class="gallery-item" data-cat="livingroom"><img src="images/gallery/livingroom_IMG_1652.jpg" alt="Living Room" loading="lazy" /></div>
+      <!-- kitchen -->
+      <div class="gallery-item" data-cat="kitchen"><img src="images/gallery/kitchen_IMG_1643.jpg" alt="Kitchen" loading="lazy" /></div>
+      <!-- wine cellar -->
+      <div class="gallery-item" data-cat="winecellar"><img src="images/gallery/winecellar_IMG_8160.jpg" alt="Wine Cellar" loading="lazy" /></div>
+      <div class="gallery-item" data-cat="winecellar"><img src="images/gallery/winecellar_IMG_8162.jpg" alt="Wine Cellar" loading="lazy" /></div>
+    </div>
+  </section>
+
+  <!-- ACTIVITIES -->
+  <section id="activities">
+    <div class="section-header">
+      <h2>Explore Piedmont</h2>
+      <p class="section-sub">From world-famous wines and white truffles to thermal spas and historic cities — the region surrounding the house is endlessly rich.</p>
+    </div>
+
+    <div class="activities-map-wrap">
+      <img src="images/piedmont_map.png" alt="Piedmont tourist map" class="activities-map" />
+    </div>
+
+    <div class="regions-grid">
+
+      <div class="region-card">
+        <img src="images/regions/1_Nizza_Monferrato.PNG" alt="Nizza Monferrato" class="region-logo" />
+        <h3>Nizza Monferrato</h3>
+        <ul>
+          <li>Visit the Distillerie Berta, where the world-renowned Berta Grappa is produced.</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <img src="images/regions/2_Asti.PNG" alt="Asti" class="region-logo" />
+        <h3>Asti</h3>
+        <ul>
+          <li>Explore the historic city center and the Cathedral of Santa Maria Assunta.</li>
+          <li>Enjoy wine tasting, especially the famous Asti Spumante.</li>
+          <li>Do not miss the Palio di Asti in September, one of the oldest horse races in Italy.</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <img src="images/regions/3_Turin.PNG" alt="Turin" class="region-logo" />
+        <h3>Turin</h3>
+        <ul>
+          <li>Visit the National Cinema Museum and take the elevator to the top for stunning panoramic views of the city.</li>
+          <li>Visit Sacra di San Michele, a breathtaking mountaintop abbey said to have inspired Umberto Eco's <em>The Name of the Rose</em>.</li>
+          <li>Stroll along Via Roma and enjoy shopping and cafes.</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <img src="images/regions/4_Cuneo.PNG" alt="Cuneo" class="region-logo" />
+        <h3>Cuneo</h3>
+        <ul>
+          <li>Visit the beautiful Cathedral of Santa Maria del Bosco.</li>
+          <li>Join the Fiera Nazionale del Marrone festival in October, celebrating the region's chestnut harvest.</li>
+          <li>The Sagra della Nocciola di Cortemilia celebrates the famous hazelnut spread that inspired Nutella. It takes place each August in the picturesque town of Cortemilia.</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <img src="images/regions/5_Alba.PNG" alt="Alba" class="region-logo" />
+        <h3>Alba</h3>
+        <ul>
+          <li>Visit the famous white truffle fair at the Cortile della Maddalena from early October to late November.</li>
+          <li>Participate in a truffle searching trip with trained truffle dogs.</li>
+          <li>Visit local wineries and taste the famous Barolo and Barbaresco wines.</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <img src="images/regions/6_Acqui_Terme.PNG" alt="Acqui Terme" class="region-logo" />
+        <h3>Acqui Terme</h3>
+        <ul>
+          <li>Get a spa treatment in the town's famous hot springs, such as the Lago delle Sorgenti or the Terme di Acqui.</li>
+          <li>Stop by the Bollente hot spring fountain, where visitors often fill bottles with the thermal water, believed to have healing properties.</li>
+          <li>Explore the remains of the ancient Roman aqueduct, which once supplied water to the town.</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <img src="images/regions/7_Alessandria.PNG" alt="Alessandria" class="region-logo" />
+        <h3>Alessandria</h3>
+        <ul>
+          <li>Visit the impressive Citadel of Alessandria, a star-shaped fortress built in the 18th century.</li>
+          <li>Enjoy shopping in Alessandria's boutiques, known for high-quality leather goods.</li>
+          <li>Join local festivals, such as the Fiera di San Giorgio in April.</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <img src="images/regions/8_Casale_Monferrato.PNG" alt="Casale Monferrato" class="region-logo" />
+        <h3>Casale Monferrato</h3>
+        <ul>
+          <li>Enjoy outdoor activities in the Po River Park, which offers walking and cycling trails.</li>
+          <li>Explore the Festa del Vino in September, the famous wine festival.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- RENTAL -->
+  <section id="rental">
+    <div class="section-header">
+      <h2>Rental Information</h2>
+      <p class="section-sub">Everything you need to know before booking your stay.</p>
+    </div>
+    <div class="rental-grid">
+      <div class="rental-card">
+        <div class="rental-icon">&#128197;</div>
+        <h3>Minimum Stay</h3>
+        <p>We welcome guests for a minimum of one week. Shorter stays are not available in order to preserve the tranquility of the estate.</p>
+      </div>
+      <div class="rental-card">
+        <div class="rental-icon">&#127968;</div>
+        <h3>The Property</h3>
+        <p>The entire estate is rented exclusively — you will have the house, pool, and grounds entirely to yourselves throughout your stay.</p>
+      </div>
+      <div class="rental-card">
+        <div class="rental-icon">&#128101;</div>
+        <h3>Guests</h3>
+        <p>The house comfortably accommodates a small group of guests. Exact capacity details are available on request.</p>
+      </div>
+      <div class="rental-card">
+        <div class="rental-icon">&#127774;</div>
+        <h3>Season</h3>
+        <p>The property is available for rental from spring through autumn. The surrounding Piedmont landscape is especially beautiful during harvest season.</p>
+      </div>
+      <div class="rental-card">
+        <div class="rental-icon">&#127863;</div>
+        <h3>Piedmont Experience</h3>
+        <p>Situated among vineyards and hazelnut groves, the house is ideally placed to explore the Langhe and Monferrato wine regions, truffles, and local cuisine.</p>
+      </div>
+      <div class="rental-card">
+        <div class="rental-icon">&#9993;</div>
+        <h3>Booking</h3>
+        <p>All bookings are made directly with the owners. Please reach out via the contact details below to check availability and discuss your stay.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-header">
+      <h2>Contact</h2>
+      <p class="section-sub">We look forward to welcoming you to Casa del Lupino Bianco.</p>
+    </div>
+    <div class="contact-block">
+      <div class="contact-item">
+        <span class="contact-label">Email</span>
+        <a href="mailto:info@casadellupinobianco.com">info@casadellupinobianco.com</a>
+      </div>
+      <div class="contact-divider"></div>
+      <div class="contact-item">
+        <span class="contact-label">Address</span>
+        <address>
+          Strada Gianola 17<br />
+          14040 Castel Boglione<br />
+          Italy
+        </address>
+        <a href="https://maps.app.goo.gl/CPczstTcMrMsLn468" target="_blank" rel="noopener" class="map-link">Open in Google Maps &#8599;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <img src="images/logo.png" alt="Casa del Lupino Bianco" class="footer-logo" />
+    <p>&copy; <span id="year"></span> Casa del Lupino Bianco &mdash; casadellupinobianco.com</p>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="lb-close" aria-label="Close">&times;</button>
+    <button class="lb-prev" aria-label="Previous">&#8249;</button>
+    <button class="lb-next" aria-label="Next">&#8250;</button>
+    <div class="lb-img-wrap">
+      <img id="lb-img" src="" alt="" />
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
