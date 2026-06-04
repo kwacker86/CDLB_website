@@ -372,37 +372,47 @@ section { padding: 6rem 2rem; }
 
 /* ─── Rental ────────────────────────────────────────────── */
 #rental { background: var(--cream2); }
-.rental-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
-  max-width: 1100px;
-  margin: 0 auto;
-  background: var(--brown-lt);
-  border: 2px solid var(--brown-lt);
-}
-.rental-card {
-  background: var(--cream);
-  padding: 2.5rem 2rem;
+.rental-illustration {
   display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
+  justify-content: center;
+  margin-bottom: 3rem;
 }
-.rental-icon {
-  font-size: 1.6rem;
-  line-height: 1;
+.rental-illustration img {
+  width: 280px;
+  max-width: 100%;
+  opacity: 0.9;
 }
-.rental-card h3 {
+.rental-info {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.rental-row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 2.5rem;
+  padding: 1.75rem 0;
+  border-bottom: 1px solid rgba(101,67,33,0.2);
+}
+.rental-row:first-child {
+  border-top: 1px solid rgba(101,67,33,0.2);
+}
+.rental-label {
   font-family: var(--serif);
   font-weight: 400;
-  font-size: 1.25rem;
-  letter-spacing: 0.03em;
+  font-size: 1.05rem;
   color: var(--brown);
+  letter-spacing: 0.03em;
+  padding-top: 0.1rem;
 }
-.rental-card p {
+.rental-detail {
   font-size: 0.92rem;
   line-height: 1.8;
   color: var(--brown-lt);
+}
+.rental-detail a {
+  color: var(--brown);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* ─── Contact ───────────────────────────────────────────── */
@@ -533,13 +543,12 @@ footer p {
 /* ─── Responsive ─────────────────────────────────────────── */
 @media (max-width: 900px) {
   .gallery { columns: 2; }
-  .rental-grid { grid-template-columns: 1fr 1fr; }
   #nav nav { display: none; }
   .burger { display: block; }
 }
 @media (max-width: 600px) {
   .gallery { columns: 1; }
-  .rental-grid { grid-template-columns: 1fr; }
+  .rental-row { grid-template-columns: 1fr; gap: 0.4rem; }
   .contact-divider { width: 60px; height: 1px; }
   .lb-prev { left: 0.5rem; }
   .lb-next { right: 0.5rem; }
