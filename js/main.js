@@ -114,3 +114,11 @@ lightbox.addEventListener('touchend', e => {
   const dx = e.changedTouches[0].clientX - touchStartX;
   if (Math.abs(dx) > 50) dx < 0 ? showNext() : showPrev();
 });
+
+// ── Amenities toggle ────────────────────────────────────────
+function toggleAmenities() {
+  const hidden = document.getElementById('amenitiesHidden');
+  const btn = document.querySelector('.amenity-toggle');
+  hidden.classList.toggle('show');
+  btn.textContent = hidden.classList.contains('show') ? 'Show less' : 'Show more';
+}

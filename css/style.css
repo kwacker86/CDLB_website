@@ -414,6 +414,47 @@ section { padding: 6rem 2rem; }
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+.amenities-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+.amenity-item {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--brown-lt);
+  min-width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.amenity-item i {
+  width: 1.2rem;
+  text-align: center;
+  color: var(--brown);
+  font-size: 1rem;
+}
+.amenities-hidden {
+  display: none;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+.amenities-hidden.show {
+  display: flex;
+}
+.amenity-toggle {
+  background: none;
+  border: none;
+  color: var(--brown);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-size: 0.92rem;
+  padding: 0;
+  font-family: inherit;
+  white-space: nowrap;
+}
 
 /* ─── Contact ───────────────────────────────────────────── */
 #contact {
