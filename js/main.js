@@ -21,7 +21,6 @@ document.getElementById('year').textContent = new Date().getFullYear();
 
 // ── Gallery Carousel ──────────────────────────────────────────
 
-// Read all image data from the expanded grid (hidden in DOM but queryable)
 const galleryItemEls = Array.from(document.querySelectorAll('#gallery .gallery-item'));
 const galleryData = galleryItemEls.map(el => ({
   src: el.querySelector('img').getAttribute('src'),
@@ -33,6 +32,9 @@ let currentFilter = 'highlights';
 let carouselIndex = 0;
 let currentFilteredData = getFilteredData('highlights');
 
+// Dataset used by the Show All lightbox (deduplicated when Show All opens)
+let showAllData = galleryData;
+
 function getItemsPerView() {
   if (window.innerWidth >= 900) return 3;
   if (window.innerWidth >= 600) return 2;
@@ -42,6 +44,18 @@ function getItemsPerView() {
 function getFilteredData(filter) {
   if (filter === 'all') return galleryData;
   return galleryData.filter(d => d.cat === filter);
+}
+
+// Strip category prefix and optional leading "N_" to get the base photo filename
+function getBaseName(src) {
+  const filename = src.split('/').pop();
+  const withoutCat = filename.replace(/^(highlights|outdoors|interiors|bedrooms|winecellar)_/, '');
+  return withoutCat.replace(/^\d+_/, '');
+}
+
+function updateMobileArrows() {
+  carouselMobilePrev.disabled = carouselIndex === 0;
+  carouselMobileNext.disabled = carouselIndex >= currentFilteredData.length - 1;
 }
 
 function renderCarousel() {
@@ -71,6 +85,7 @@ function renderCarousel() {
     });
     carouselViewport.scrollLeft = 0;
     carouselIndex = 0;
+    updateMobileArrows();
   } else {
     const page = currentFilteredData.slice(carouselIndex, carouselIndex + perView);
     page.forEach((item, i) => {
@@ -104,18 +119,25 @@ function renderCarousel() {
 }
 
 // ── Show All refs + helpers ──────────────────────────────────
-const carouselWrap      = document.querySelector('.gallery-carousel-wrap');
-const carouselCounterEl = document.getElementById('carouselCounter');
-const showAllBtn        = document.getElementById('showAllBtn');
-const galleryExpanded   = document.getElementById('galleryExpanded');
-const showAllText       = showAllBtn.querySelector('.show-all-text');
+const carouselWrap        = document.querySelector('.gallery-carousel-wrap');
+const carouselCounterEl   = document.getElementById('carouselCounter');
+const carouselMobileNavEl = document.getElementById('carouselMobileNav');
+const carouselMobilePrev  = document.getElementById('carouselMobilePrev');
+const carouselMobileNext  = document.getElementById('carouselMobileNext');
+const showAllBtn          = document.getElementById('showAllBtn');
+const galleryExpanded     = document.getElementById('galleryExpanded');
+const showAllText         = showAllBtn.querySelector('.show-all-text');
 
 function setCarouselVisible(visible) {
-  carouselWrap.style.display      = visible ? '' : 'none';
-  carouselCounterEl.style.display = visible ? '' : 'none';
+  carouselWrap.style.display        = visible ? '' : 'none';
+  carouselCounterEl.style.display   = visible ? '' : 'none';
+  carouselMobileNavEl.style.display = visible ? '' : 'none';
 }
 
 function closeShowAll() {
+  // Restore all gallery items (undo deduplication)
+  galleryItemEls.forEach(el => { el.style.display = ''; });
+  showAllData = galleryData;
   galleryExpanded.classList.remove('open');
   showAllBtn.classList.remove('active');
   showAllText.textContent = 'Show all';
@@ -170,17 +192,28 @@ carouselViewport.addEventListener('touchend', e => {
   }
 });
 
-// Mobile: update counter as user scrolls between snapped slides
+// Mobile arrows below carousel — scroll one slide at a time
+carouselMobilePrev.addEventListener('click', () => {
+  const slide = carouselViewport.querySelector('.carousel-slide');
+  if (slide) carouselViewport.scrollBy({ left: -(slide.offsetWidth + 12), behavior: 'smooth' });
+});
+carouselMobileNext.addEventListener('click', () => {
+  const slide = carouselViewport.querySelector('.carousel-slide');
+  if (slide) carouselViewport.scrollBy({ left: slide.offsetWidth + 12, behavior: 'smooth' });
+});
+
+// Mobile: update counter and arrow states as user scrolls between snapped slides
 carouselViewport.addEventListener('scroll', () => {
   if (window.innerWidth > 600) return;
   const slide = carouselViewport.querySelector('.carousel-slide');
   if (!slide) return;
-  const slideWidth = slide.offsetWidth + 12; // slide + gap
+  const slideWidth = slide.offsetWidth + 12;
   const idx = Math.round(carouselViewport.scrollLeft / slideWidth);
   const total = currentFilteredData.length;
   if (idx !== carouselIndex && idx >= 0 && idx < total) {
     carouselIndex = idx;
     document.getElementById('carouselCounter').textContent = `${idx + 1} of ${total}`;
+    updateMobileArrows();
   }
 }, { passive: true });
 
@@ -199,6 +232,22 @@ showAllBtn.addEventListener('click', () => {
   const opening = !galleryExpanded.classList.contains('open');
 
   if (opening) {
+    // Deduplicate gallery items by base photo filename
+    const seen = new Set();
+    const unique = [];
+    galleryItemEls.forEach((el, i) => {
+      const src = el.querySelector('img').getAttribute('src');
+      const base = getBaseName(src);
+      if (seen.has(base)) {
+        el.style.display = 'none';
+      } else {
+        seen.add(base);
+        el.style.display = '';
+        unique.push(galleryData[i]);
+      }
+    });
+    showAllData = unique;
+
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     showAllBtn.classList.add('active');
     showAllText.textContent = 'Hide all';
@@ -214,9 +263,13 @@ showAllBtn.addEventListener('click', () => {
   }
 });
 
-// Expanded grid item clicks → lightbox through all images
-galleryItemEls.forEach((el, i) => {
-  el.addEventListener('click', () => openLightbox(galleryData, i));
+// Expanded grid item clicks → lightbox (uses deduplicated showAllData when Show All is open)
+galleryItemEls.forEach(el => {
+  el.addEventListener('click', () => {
+    const src = el.querySelector('img').getAttribute('src');
+    const idx = showAllData.findIndex(d => d.src === src);
+    if (idx >= 0) openLightbox(showAllData, idx);
+  });
 });
 
 // ── Lightbox ────────────────────────────────────────────────

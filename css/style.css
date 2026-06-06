@@ -353,6 +353,8 @@ section { padding: 6rem 2rem; }
   color: var(--brown-lt);
 }
 
+.carousel-mobile-nav { display: none; }
+
 /* ─── Show-all button (in filter bar) ───────────────────── */
 .show-all-btn {
   display: inline-flex;
@@ -781,8 +783,30 @@ footer p {
   }
   .carousel-viewport::-webkit-scrollbar { display: none; }
   .carousel-track { padding-left: 2rem; }
-  /* 85% width lets the next slide peek from the right; snap aligns each slide */
-  .carousel-slide { flex: 0 0 85%; height: 260px; scroll-snap-align: start; }
+  /* 85% width lets the next slide peek; square aspect ratio */
+  .carousel-slide { flex: 0 0 85%; aspect-ratio: 1 / 1; height: auto; scroll-snap-align: start; }
+  .carousel-mobile-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 0.75rem;
+  }
+  .carousel-mobile-arrow {
+    background: none;
+    border: 1px solid var(--brown-lt);
+    color: var(--brown);
+    font-size: 2.5rem;
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+    transition: background 0.25s, color 0.25s;
+  }
+  .carousel-mobile-arrow:disabled { opacity: 0.25; cursor: default; }
   .rental-row { grid-template-columns: 1fr; gap: 0.4rem; }
   .contact-divider { width: 60px; height: 1px; }
   .lb-prev { left: 0.5rem; }
