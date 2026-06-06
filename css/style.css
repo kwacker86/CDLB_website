@@ -474,7 +474,7 @@ section { padding: 6rem 2rem; }
 
 /* ─── Contact ───────────────────────────────────────────── */
 #contact {
-  background: var(--brown);
+  background: #1c3e29;
   color: var(--cream);
 }
 #contact .section-header h2 { color: var(--cream); }
