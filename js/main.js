@@ -19,23 +19,151 @@ document.getElementById('hero').classList.add('loaded');
 // Footer year
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// ── Gallery filter ──────────────────────────────────────────
-const filterBtns = document.querySelectorAll('.filter-btn');
-const galleryItems = document.querySelectorAll('.gallery-item');
+// ── Gallery Carousel ──────────────────────────────────────────
 
-filterBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    filterBtns.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const cat = btn.dataset.filter;
-    galleryItems.forEach(item => {
-      if (cat === 'all' || item.dataset.cat === cat) {
-        item.classList.remove('hidden');
-      } else {
-        item.classList.add('hidden');
-      }
-    });
+// Read all image data from the expanded grid (hidden in DOM but queryable)
+const galleryItemEls = Array.from(document.querySelectorAll('#gallery .gallery-item'));
+const galleryData = galleryItemEls.map(el => ({
+  src: el.querySelector('img').getAttribute('src'),
+  alt: el.querySelector('img').getAttribute('alt'),
+  cat: el.dataset.cat
+}));
+
+const HIGHLIGHT_IDS = ['IMG_0902', 'IMG_6981', 'IMG_7925', 'IMG_7460', 'IMG_8115', 'IMG_7696'];
+
+let currentFilter = 'highlights';
+let carouselIndex = 0;
+let currentFilteredData;
+
+function getItemsPerView() {
+  if (window.innerWidth >= 900) return 3;
+  if (window.innerWidth >= 600) return 2;
+  return 1;
+}
+
+function getFilteredData(filter) {
+  if (filter === 'highlights') {
+    return HIGHLIGHT_IDS
+      .map(id => galleryData.find(d => d.src.includes(id)))
+      .filter(Boolean);
+  }
+  if (filter === 'all') return galleryData;
+  return galleryData.filter(d => d.cat === filter);
+}
+
+function renderCarousel() {
+  const perView = getItemsPerView();
+  const total = currentFilteredData.length;
+
+  // Clamp index
+  carouselIndex = total <= perView
+    ? 0
+    : Math.max(0, Math.min(carouselIndex, total - perView));
+
+  const track = document.getElementById('carouselTrack');
+  track.innerHTML = '';
+
+  const page = currentFilteredData.slice(carouselIndex, carouselIndex + perView);
+  page.forEach((item, i) => {
+    const slide = document.createElement('div');
+    slide.className = 'carousel-slide';
+    const img = document.createElement('img');
+    img.src = item.src;
+    img.alt = item.alt;
+    img.loading = 'lazy';
+    slide.appendChild(img);
+    const absIdx = carouselIndex + i;
+    slide.addEventListener('click', () => openLightbox(currentFilteredData, absIdx));
+    track.appendChild(slide);
   });
+
+  // Counter
+  const counter = document.getElementById('carouselCounter');
+  if (total === 0) {
+    counter.textContent = '';
+  } else {
+    const end = Math.min(carouselIndex + perView, total);
+    counter.textContent = total === 1
+      ? '1 of 1'
+      : `${carouselIndex + 1}–${end} of ${total}`;
+  }
+
+  // Arrow states
+  document.getElementById('carouselPrev').disabled = carouselIndex === 0;
+  document.getElementById('carouselNext').disabled = carouselIndex + perView >= total;
+}
+
+// Filter buttons
+document.querySelectorAll('.filter-btn:not(.show-all-btn)').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    currentFilteredData = getFilteredData(currentFilter);
+    carouselIndex = 0;
+    renderCarousel();
+  });
+});
+
+// Carousel navigation — one slide at a time
+document.getElementById('carouselPrev').addEventListener('click', () => {
+  if (carouselIndex > 0) {
+    carouselIndex--;
+    renderCarousel();
+  }
+});
+
+document.getElementById('carouselNext').addEventListener('click', () => {
+  if (carouselIndex + getItemsPerView() < currentFilteredData.length) {
+    carouselIndex++;
+    renderCarousel();
+  }
+});
+
+// Touch swipe on carousel
+let carouselTouchX = 0;
+const carouselViewport = document.querySelector('.carousel-viewport');
+carouselViewport.addEventListener('touchstart', e => {
+  carouselTouchX = e.touches[0].clientX;
+}, { passive: true });
+carouselViewport.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - carouselTouchX;
+  if (Math.abs(dx) > 50) {
+    if (dx < 0 && carouselIndex + getItemsPerView() < currentFilteredData.length) {
+      carouselIndex++;
+      renderCarousel();
+    } else if (dx > 0 && carouselIndex > 0) {
+      carouselIndex--;
+      renderCarousel();
+    }
+  }
+});
+
+// Resize: re-render to adjust slides per view
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(renderCarousel, 150);
+}, { passive: true });
+
+// Initial render
+currentFilteredData = getFilteredData('highlights');
+renderCarousel();
+
+// ── Show All toggle ──────────────────────────────────────────
+const showAllBtn = document.getElementById('showAllBtn');
+const galleryExpanded = document.getElementById('galleryExpanded');
+const showAllText = showAllBtn.querySelector('.show-all-text');
+
+showAllBtn.addEventListener('click', () => {
+  const isOpen = galleryExpanded.classList.toggle('open');
+  showAllBtn.classList.toggle('active', isOpen);
+  showAllText.textContent = isOpen ? 'Hide all' : 'Show all';
+});
+
+// Expanded grid item clicks → lightbox through all images
+galleryItemEls.forEach((el, i) => {
+  el.addEventListener('click', () => openLightbox(galleryData, i));
 });
 
 // ── Lightbox ────────────────────────────────────────────────
@@ -45,21 +173,21 @@ const lbClose  = document.querySelector('.lb-close');
 const lbPrev   = document.querySelector('.lb-prev');
 const lbNext   = document.querySelector('.lb-next');
 
-let currentItems = [];
-let currentIndex = 0;
+let lbItems = [];
+let lbIndex = 0;
 
-function visibleItems() {
-  return [...galleryItems].filter(el => !el.classList.contains('hidden'));
-}
-
-function openLightbox(index) {
-  currentItems = visibleItems();
-  currentIndex = index;
-  const img = currentItems[currentIndex].querySelector('img');
-  lbImg.src = img.src;
-  lbImg.alt = img.alt;
+function openLightbox(items, index) {
+  lbItems = items;
+  lbIndex = index;
+  updateLightboxImage();
   lightbox.classList.add('open');
   document.body.style.overflow = 'hidden';
+}
+
+function updateLightboxImage() {
+  const item = lbItems[lbIndex];
+  lbImg.src = item.src;
+  lbImg.alt = item.alt;
 }
 
 function closeLightbox() {
@@ -68,33 +196,19 @@ function closeLightbox() {
   lbImg.src = '';
 }
 
-function showNext() {
-  currentItems = visibleItems();
-  currentIndex = (currentIndex + 1) % currentItems.length;
-  const img = currentItems[currentIndex].querySelector('img');
-  lbImg.src = img.src;
-  lbImg.alt = img.alt;
+function showLbNext() {
+  lbIndex = (lbIndex + 1) % lbItems.length;
+  updateLightboxImage();
 }
 
-function showPrev() {
-  currentItems = visibleItems();
-  currentIndex = (currentIndex - 1 + currentItems.length) % currentItems.length;
-  const img = currentItems[currentIndex].querySelector('img');
-  lbImg.src = img.src;
-  lbImg.alt = img.alt;
+function showLbPrev() {
+  lbIndex = (lbIndex - 1 + lbItems.length) % lbItems.length;
+  updateLightboxImage();
 }
-
-galleryItems.forEach((item, i) => {
-  item.addEventListener('click', () => {
-    const vis = visibleItems();
-    const visIdx = vis.indexOf(item);
-    openLightbox(visIdx);
-  });
-});
 
 lbClose.addEventListener('click', closeLightbox);
-lbNext.addEventListener('click', showNext);
-lbPrev.addEventListener('click', showPrev);
+lbNext.addEventListener('click', showLbNext);
+lbPrev.addEventListener('click', showLbPrev);
 
 lightbox.addEventListener('click', e => {
   if (e.target === lightbox) closeLightbox();
@@ -102,17 +216,17 @@ lightbox.addEventListener('click', e => {
 
 document.addEventListener('keydown', e => {
   if (!lightbox.classList.contains('open')) return;
-  if (e.key === 'Escape')      closeLightbox();
-  if (e.key === 'ArrowRight')  showNext();
-  if (e.key === 'ArrowLeft')   showPrev();
+  if (e.key === 'Escape')     closeLightbox();
+  if (e.key === 'ArrowRight') showLbNext();
+  if (e.key === 'ArrowLeft')  showLbPrev();
 });
 
-// Touch swipe support for lightbox
+// Touch swipe in lightbox
 let touchStartX = 0;
 lightbox.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
 lightbox.addEventListener('touchend', e => {
   const dx = e.changedTouches[0].clientX - touchStartX;
-  if (Math.abs(dx) > 50) dx < 0 ? showNext() : showPrev();
+  if (Math.abs(dx) > 50) dx < 0 ? showLbNext() : showLbPrev();
 });
 
 // ── Amenities toggle ────────────────────────────────────────
