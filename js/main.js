@@ -29,8 +29,6 @@ const galleryData = galleryItemEls.map(el => ({
   cat: el.dataset.cat
 }));
 
-const HIGHLIGHT_IDS = ['IMG_0902', 'IMG_6981', 'IMG_7925', 'IMG_7460', 'IMG_8115', 'IMG_7696'];
-
 let currentFilter = 'highlights';
 let carouselIndex = 0;
 let currentFilteredData;
@@ -42,11 +40,6 @@ function getItemsPerView() {
 }
 
 function getFilteredData(filter) {
-  if (filter === 'highlights') {
-    return HIGHLIGHT_IDS
-      .map(id => galleryData.find(d => d.src.includes(id)))
-      .filter(Boolean);
-  }
   if (filter === 'all') return galleryData;
   return galleryData.filter(d => d.cat === filter);
 }
