@@ -70,14 +70,27 @@ function renderCarousel() {
     track.appendChild(slide);
   });
 
+  // On mobile: append a partial next slide so the next image peeks from the right
+  if (window.innerWidth <= 600 && carouselIndex + perView < total) {
+    const peekItem = currentFilteredData[carouselIndex + perView];
+    const peek = document.createElement('div');
+    peek.className = 'carousel-slide';
+    const peekImg = document.createElement('img');
+    peekImg.src = peekItem.src;
+    peekImg.alt = peekItem.alt;
+    peekImg.loading = 'lazy';
+    peek.appendChild(peekImg);
+    track.appendChild(peek);
+  }
+
   // Counter
   const counter = document.getElementById('carouselCounter');
   if (total === 0) {
     counter.textContent = '';
   } else {
     const end = Math.min(carouselIndex + perView, total);
-    counter.textContent = total === 1
-      ? '1 of 1'
+    counter.textContent = perView === 1
+      ? `${carouselIndex + 1} of ${total}`
       : `${carouselIndex + 1}–${end} of ${total}`;
   }
 

@@ -764,13 +764,19 @@ footer p {
 }
 @media (max-width: 600px) {
   .gallery { columns: 1; }
-  .carousel-slide {
-    flex: 0 0 100%;
-    height: 260px;
+  /* Arrows replaced by swipe on mobile */
+  .carousel-arrow { display: none; }
+  /* Extend carousel to full viewport width and clip the peek there */
+  .gallery-carousel-wrap {
+    margin-left: -2rem;
+    margin-right: -2rem;
+    overflow: hidden;
   }
-  .carousel-arrow { width: 36px; height: 36px; font-size: 2rem; }
-  .carousel-prev { margin-right: 0.4rem; }
-  .carousel-next { margin-left: 0.4rem; }
+  /* Let slides overflow so the next one peeks from the right */
+  .carousel-viewport { overflow: visible; }
+  .carousel-track { padding-left: 2rem; }
+  /* Each slide takes ~85% width — the remaining ~15% shows the next image */
+  .carousel-slide { flex: 0 0 85%; height: 260px; }
   .rental-row { grid-template-columns: 1fr; gap: 0.4rem; }
   .contact-divider { width: 60px; height: 1px; }
   .lb-prev { left: 0.5rem; }
