@@ -190,32 +190,89 @@
       <div class="rental-row">
         <div class="rental-label">Amenities</div>
         <div class="rental-detail">
-          <div class="amenities-list">
-            <div class="amenity-item"><img src="images/amenities/Wifi.png" alt="Wifi"> Wifi</div>
-            <div class="amenity-item"><img src="images/amenities/Pool.png" alt="Pool"> Pool</div>
-            <div class="amenity-item"><img src="images/amenities/Wine_Cellar.png" alt="Wine Cellar"> Wine Cellar</div>
-            <div class="amenity-item"><img src="images/amenities/Wood-Fired_Pizza_Oven.png" alt="Wood-Fired Pizza Oven"> Wood-Fired Pizza Oven</div>
-            <div class="amenity-item"><img src="images/amenities/grill.png" alt="Grill"> Grill</div>
-            <div class="amenity-item"><img src="images/amenities/Bocce_Court.png" alt="Bocce Court"> Bocce Court</div>
-            <div class="amenity-item"><img src="images/amenities/outdoor_dining.png" alt="Outdoor Dining Area"> Outdoor Dining Area</div>
-            <div class="amenity-item"><img src="images/amenities/pet_friendly.png" alt="Pet Friendly"> Pet Friendly</div>
+          <!-- Preview: 8 highlights + Show more -->
+          <div id="amenitiesPreview">
+            <div class="amenities-list">
+              <div class="amenity-item"><img src="images/amenities/Pool.png" alt="Pool"> Pool</div>
+              <div class="amenity-item"><img src="images/amenities/Wine_Cellar.png" alt="Wine Cellar"> Wine Cellar</div>
+              <div class="amenity-item"><img src="images/amenities/Wood-Fired_Pizza_Oven.png" alt="Wood-Fired Pizza Oven"> Wood-Fired Pizza Oven</div>
+              <div class="amenity-item"><img src="images/amenities/Bocce_Court.png" alt="Bocce Court"> Bocce Court</div>
+              <div class="amenity-item"><img src="images/amenities/outdoor_dining.png" alt="Outdoor Dining Area"> Outdoor Dining Area</div>
+              <div class="amenity-item"><img src="images/amenities/grill.png" alt="BBQ Grill"> BBQ Grill</div>
+              <div class="amenity-item"><img src="images/amenities/Wifi.png" alt="High-Speed WiFi"> High-Speed WiFi</div>
+              <div class="amenity-item"><img src="images/amenities/pet_friendly.png" alt="Pet Friendly"> Pet Friendly</div>
+            </div>
             <button class="amenity-toggle" onclick="toggleAmenities()">Show more</button>
           </div>
-          <div class="amenities-hidden" id="amenitiesHidden">
-            <div class="amenity-item"><img src="images/amenities/Washing_Machine.png" alt="Washer"> Washer</div>
-            <div class="amenity-item"><img src="images/amenities/Dryer.png" alt="Dryer"> Dryer</div>
-            <div class="amenity-item"><img src="images/amenities/baby_chair.png" alt="Baby Chair"> Baby Chair</div>
-            <div class="amenity-item"><img src="images/amenities/baby_crib.png" alt="Baby Crib"> Baby Crib</div>
-            <div class="amenity-item"><img src="images/amenities/Hairdryer.png" alt="Hairdryer"> Hairdryer</div>
-            <div class="amenity-item"><img src="images/amenities/bicycles.png" alt="Bicycles"> Bicycles</div>
-            <div class="amenity-item"><img src="images/amenities/Kitchen-Aid.png" alt="KitchenAid"> KitchenAid</div>
-            <div class="amenity-item"><img src="images/amenities/fireplace.png" alt="Fireplace"> Fireplace</div>
-            <div class="amenity-item"><img src="images/amenities/toaster.png" alt="Toaster"> Toaster</div>
-            <div class="amenity-item"><img src="images/amenities/microwave.png" alt="Microwave"> Microwave</div>
-            <div class="amenity-item"><img src="images/amenities/Iron.png" alt="Iron"> Iron</div>
-            <div class="amenity-item"><img src="images/amenities/tv.png" alt="TV"> TV</div>
-            <div class="amenity-item"><img src="images/amenities/on-site_parking.png" alt="On-site Parking"> On-site Parking</div>
-            <div class="amenity-item"><img src="images/amenities/no_ac.png" alt="No A/C"> No A/C</div>
+
+          <!-- Categorised full view -->
+          <div class="amenities-full" id="amenitiesFull">
+
+            <div class="amenity-category-group">
+              <div class="amenity-category-title">Outdoor &amp; Leisure</div>
+              <div class="amenity-tiles">
+                <div class="amenity-tile"><img src="images/amenities/Pool.png" alt="Pool"><span>Pool</span></div>
+                <div class="amenity-tile"><img src="images/amenities/Wine_Cellar.png" alt="Wine Cellar"><span>Wine Cellar</span></div>
+                <div class="amenity-tile"><img src="images/amenities/Wood-Fired_Pizza_Oven.png" alt="Wood-Fired Pizza Oven"><span>Wood-Fired Pizza Oven</span></div>
+                <div class="amenity-tile"><img src="images/amenities/Bocce_Court.png" alt="Bocce Court"><span>Bocce Court</span></div>
+                <div class="amenity-tile"><img src="images/amenities/vineyard.png" alt="Vineyard & Countryside Views"><span>Vineyard &amp; Countryside Views</span></div>
+                <div class="amenity-tile"><img src="images/amenities/outdoor_dining.png" alt="Outdoor Dining Area"><span>Outdoor Dining Area</span></div>
+                <div class="amenity-tile"><img src="images/amenities/grill.png" alt="BBQ Grill"><span>BBQ Grill</span></div>
+                <div class="amenity-tile"><img src="images/amenities/bicycles.png" alt="Bicycles"><span>Bicycles</span></div>
+                <div class="amenity-tile"><i class="fa-solid fa-seedling"></i><span>Private Garden</span></div>
+              </div>
+            </div>
+
+            <div class="amenity-category-group">
+              <div class="amenity-category-title">Comfort &amp; Entertainment</div>
+              <div class="amenity-tiles">
+                <div class="amenity-tile"><img src="images/amenities/Wifi.png" alt="High-Speed WiFi"><span>High-Speed WiFi</span></div>
+                <div class="amenity-tile"><img src="images/amenities/tv.png" alt="Smart TV"><span>Smart TV</span></div>
+                <div class="amenity-tile"><img src="images/amenities/fireplace.png" alt="Fireplace"><span>Fireplace</span></div>
+                <div class="amenity-tile"><i class="fa-solid fa-fan"></i><span>Fans</span></div>
+                <div class="amenity-tile"><i class="fa-solid fa-shield"></i><span>Mosquito Screens</span></div>
+                <div class="amenity-tile"><i class="fa-solid fa-table-columns"></i><span>Traditional Shutters</span></div>
+              </div>
+            </div>
+
+            <div class="amenity-category-group">
+              <div class="amenity-category-title">Kitchen</div>
+              <div class="amenity-tiles">
+                <div class="amenity-tile"><i class="fa-solid fa-utensils"></i><span>Fully Equipped Kitchen</span></div>
+                <div class="amenity-tile"><img src="images/amenities/Kitchen-Aid.png" alt="KitchenAid Stand Mixer"><span>KitchenAid Stand Mixer</span></div>
+                <div class="amenity-tile"><img src="images/amenities/microwave.png" alt="Microwave"><span>Microwave</span></div>
+                <div class="amenity-tile"><img src="images/amenities/toaster.png" alt="Toaster"><span>Toaster</span></div>
+              </div>
+            </div>
+
+            <div class="amenity-category-group">
+              <div class="amenity-category-title">Family Friendly</div>
+              <div class="amenity-tiles">
+                <div class="amenity-tile"><img src="images/amenities/baby_crib.png" alt="Baby Crib"><span>Baby Crib</span></div>
+                <div class="amenity-tile"><img src="images/amenities/baby_chair.png" alt="High Chair"><span>High Chair</span></div>
+              </div>
+            </div>
+
+            <div class="amenity-category-group">
+              <div class="amenity-category-title">Laundry &amp; Essentials</div>
+              <div class="amenity-tiles">
+                <div class="amenity-tile"><img src="images/amenities/Washing_Machine.png" alt="Washer"><span>Washer</span></div>
+                <div class="amenity-tile"><img src="images/amenities/Dryer.png" alt="Dryer"><span>Dryer</span></div>
+                <div class="amenity-tile"><img src="images/amenities/Hairdryer.png" alt="Hair Dryer"><span>Hair Dryer</span></div>
+                <div class="amenity-tile"><img src="images/amenities/Iron.png" alt="Iron"><span>Iron</span></div>
+              </div>
+            </div>
+
+            <div class="amenity-category-group">
+              <div class="amenity-category-title">Additional</div>
+              <div class="amenity-tiles">
+                <div class="amenity-tile"><img src="images/amenities/on-site_parking.png" alt="On-Site Parking"><span>On-Site Parking</span></div>
+                <div class="amenity-tile"><img src="images/amenities/pet_friendly.png" alt="Pet Friendly"><span>Pet Friendly</span></div>
+                <div class="amenity-tile"><i class="fa-solid fa-bed"></i><span>Bedding &amp; Towels Included</span></div>
+              </div>
+            </div>
+
+            <button class="amenity-toggle" onclick="toggleAmenities()">Show less</button>
           </div>
         </div>
       </div>

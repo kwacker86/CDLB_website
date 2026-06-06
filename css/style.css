@@ -582,6 +582,70 @@ section { padding: 6rem 2rem; }
   padding: 0;
   font-family: inherit;
   white-space: nowrap;
+  display: block;
+  margin-top: 1rem;
+}
+
+/* ─── Amenities categorised (expanded) ─────────────────── */
+#amenitiesPreview.hidden { display: none; }
+
+.amenities-full { display: none; }
+.amenities-full.show { display: block; }
+
+.amenity-category-group { margin-bottom: 2rem; }
+.amenity-category-group:last-of-type { margin-bottom: 0; }
+
+.amenity-category-title {
+  font-family: var(--sans);
+  font-size: 0.63rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--brown-lt);
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid rgba(101,67,33,0.15);
+}
+
+.amenity-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem 2rem;
+}
+
+.amenity-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  width: 80px;
+  text-align: center;
+}
+
+.amenity-tile img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  opacity: 0.65;
+  display: block;
+  max-width: none;
+}
+
+.amenity-tile i {
+  width: 44px;
+  height: 44px;
+  font-size: 1.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brown);
+  opacity: 0.65;
+}
+
+.amenity-tile span {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--brown-lt);
 }
 
 /* ─── Contact ───────────────────────────────────────────── */

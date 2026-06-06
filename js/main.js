@@ -260,8 +260,13 @@ lightbox.addEventListener('touchend', e => {
 
 // ── Amenities toggle ────────────────────────────────────────
 function toggleAmenities() {
-  const hidden = document.getElementById('amenitiesHidden');
-  const btn = document.querySelector('.amenity-toggle');
-  hidden.classList.toggle('show');
-  btn.textContent = hidden.classList.contains('show') ? 'Show less' : 'Show more';
+  const preview = document.getElementById('amenitiesPreview');
+  const full    = document.getElementById('amenitiesFull');
+  if (full.classList.contains('show')) {
+    full.classList.remove('show');
+    preview.classList.remove('hidden');
+  } else {
+    full.classList.add('show');
+    preview.classList.add('hidden');
+  }
 }
