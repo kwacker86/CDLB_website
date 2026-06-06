@@ -93,9 +93,29 @@ function renderCarousel() {
   document.getElementById('carouselNext').disabled = carouselIndex + perView >= total;
 }
 
-// Filter buttons
+// ── Show All refs + helpers ──────────────────────────────────
+const carouselWrap      = document.querySelector('.gallery-carousel-wrap');
+const carouselCounterEl = document.getElementById('carouselCounter');
+const showAllBtn        = document.getElementById('showAllBtn');
+const galleryExpanded   = document.getElementById('galleryExpanded');
+const showAllText       = showAllBtn.querySelector('.show-all-text');
+
+function setCarouselVisible(visible) {
+  carouselWrap.style.display      = visible ? '' : 'none';
+  carouselCounterEl.style.display = visible ? '' : 'none';
+}
+
+function closeShowAll() {
+  galleryExpanded.classList.remove('open');
+  showAllBtn.classList.remove('active');
+  showAllText.textContent = 'Show all';
+  setCarouselVisible(true);
+}
+
+// Filter buttons — also closes Show All if open
 document.querySelectorAll('.filter-btn:not(.show-all-btn)').forEach(btn => {
   btn.addEventListener('click', () => {
+    if (galleryExpanded.classList.contains('open')) closeShowAll();
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentFilter = btn.dataset.filter;
@@ -151,14 +171,23 @@ currentFilteredData = getFilteredData('highlights');
 renderCarousel();
 
 // ── Show All toggle ──────────────────────────────────────────
-const showAllBtn = document.getElementById('showAllBtn');
-const galleryExpanded = document.getElementById('galleryExpanded');
-const showAllText = showAllBtn.querySelector('.show-all-text');
-
 showAllBtn.addEventListener('click', () => {
-  const isOpen = galleryExpanded.classList.toggle('open');
-  showAllBtn.classList.toggle('active', isOpen);
-  showAllText.textContent = isOpen ? 'Hide all' : 'Show all';
+  const opening = !galleryExpanded.classList.contains('open');
+
+  if (opening) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    showAllBtn.classList.add('active');
+    showAllText.textContent = 'Hide all';
+    galleryExpanded.classList.add('open');
+    setCarouselVisible(false);
+  } else {
+    closeShowAll();
+    document.querySelector('[data-filter="highlights"]').classList.add('active');
+    currentFilter = 'highlights';
+    currentFilteredData = getFilteredData('highlights');
+    carouselIndex = 0;
+    renderCarousel();
+  }
 });
 
 // Expanded grid item clicks → lightbox through all images
