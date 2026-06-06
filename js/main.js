@@ -47,8 +47,8 @@ function getFilteredData(filter) {
 function renderCarousel() {
   const perView = getItemsPerView();
   const total = currentFilteredData.length;
+  const isMobile = window.innerWidth <= 600;
 
-  // Clamp index
   carouselIndex = total <= perView
     ? 0
     : Math.max(0, Math.min(carouselIndex, total - perView));
@@ -56,31 +56,35 @@ function renderCarousel() {
   const track = document.getElementById('carouselTrack');
   track.innerHTML = '';
 
-  const page = currentFilteredData.slice(carouselIndex, carouselIndex + perView);
-  page.forEach((item, i) => {
-    const slide = document.createElement('div');
-    slide.className = 'carousel-slide';
-    const img = document.createElement('img');
-    img.src = item.src;
-    img.alt = item.alt;
-    img.loading = 'lazy';
-    slide.appendChild(img);
-    const absIdx = carouselIndex + i;
-    slide.addEventListener('click', () => openLightbox(currentFilteredData, absIdx));
-    track.appendChild(slide);
-  });
-
-  // On mobile: append a partial next slide so the next image peeks from the right
-  if (window.innerWidth <= 600 && carouselIndex + perView < total) {
-    const peekItem = currentFilteredData[carouselIndex + perView];
-    const peek = document.createElement('div');
-    peek.className = 'carousel-slide';
-    const peekImg = document.createElement('img');
-    peekImg.src = peekItem.src;
-    peekImg.alt = peekItem.alt;
-    peekImg.loading = 'lazy';
-    peek.appendChild(peekImg);
-    track.appendChild(peek);
+  if (isMobile) {
+    // All slides rendered at once — scroll-snap handles navigation natively
+    currentFilteredData.forEach((item, i) => {
+      const slide = document.createElement('div');
+      slide.className = 'carousel-slide';
+      const img = document.createElement('img');
+      img.src = item.src;
+      img.alt = item.alt;
+      img.loading = 'lazy';
+      slide.appendChild(img);
+      slide.addEventListener('click', () => openLightbox(currentFilteredData, i));
+      track.appendChild(slide);
+    });
+    carouselViewport.scrollLeft = 0;
+    carouselIndex = 0;
+  } else {
+    const page = currentFilteredData.slice(carouselIndex, carouselIndex + perView);
+    page.forEach((item, i) => {
+      const slide = document.createElement('div');
+      slide.className = 'carousel-slide';
+      const img = document.createElement('img');
+      img.src = item.src;
+      img.alt = item.alt;
+      img.loading = 'lazy';
+      slide.appendChild(img);
+      const absIdx = carouselIndex + i;
+      slide.addEventListener('click', () => openLightbox(currentFilteredData, absIdx));
+      track.appendChild(slide);
+    });
   }
 
   // Counter
@@ -89,12 +93,12 @@ function renderCarousel() {
     counter.textContent = '';
   } else {
     const end = Math.min(carouselIndex + perView, total);
-    counter.textContent = perView === 1
-      ? `${carouselIndex + 1} of ${total}`
-      : `${carouselIndex + 1}–${end} of ${total}`;
+    counter.textContent = isMobile
+      ? `1 of ${total}`
+      : `${carouselIndex + 1}–${end} of ${total}`;
   }
 
-  // Arrow states
+  // Arrow states (desktop only — arrows hidden on mobile)
   document.getElementById('carouselPrev').disabled = carouselIndex === 0;
   document.getElementById('carouselNext').disabled = carouselIndex + perView >= total;
 }
@@ -131,7 +135,7 @@ document.querySelectorAll('.filter-btn:not(.show-all-btn)').forEach(btn => {
   });
 });
 
-// Carousel navigation — one slide at a time
+// Carousel navigation — one slide at a time (desktop only)
 document.getElementById('carouselPrev').addEventListener('click', () => {
   if (carouselIndex > 0) {
     carouselIndex--;
@@ -146,13 +150,14 @@ document.getElementById('carouselNext').addEventListener('click', () => {
   }
 });
 
-// Touch swipe on carousel
+// Touch swipe on carousel — desktop only; mobile uses native scroll-snap
 let carouselTouchX = 0;
 const carouselViewport = document.querySelector('.carousel-viewport');
 carouselViewport.addEventListener('touchstart', e => {
   carouselTouchX = e.touches[0].clientX;
 }, { passive: true });
 carouselViewport.addEventListener('touchend', e => {
+  if (window.innerWidth <= 600) return; // scroll-snap handles mobile
   const dx = e.changedTouches[0].clientX - carouselTouchX;
   if (Math.abs(dx) > 50) {
     if (dx < 0 && carouselIndex + getItemsPerView() < currentFilteredData.length) {
@@ -164,6 +169,20 @@ carouselViewport.addEventListener('touchend', e => {
     }
   }
 });
+
+// Mobile: update counter as user scrolls between snapped slides
+carouselViewport.addEventListener('scroll', () => {
+  if (window.innerWidth > 600) return;
+  const slide = carouselViewport.querySelector('.carousel-slide');
+  if (!slide) return;
+  const slideWidth = slide.offsetWidth + 12; // slide + gap
+  const idx = Math.round(carouselViewport.scrollLeft / slideWidth);
+  const total = currentFilteredData.length;
+  if (idx !== carouselIndex && idx >= 0 && idx < total) {
+    carouselIndex = idx;
+    document.getElementById('carouselCounter').textContent = `${idx + 1} of ${total}`;
+  }
+}, { passive: true });
 
 // Resize: re-render to adjust slides per view
 let resizeTimer;
