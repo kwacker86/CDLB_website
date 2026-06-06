@@ -31,7 +31,7 @@ const galleryData = galleryItemEls.map(el => ({
 
 let currentFilter = 'highlights';
 let carouselIndex = 0;
-let currentFilteredData;
+let currentFilteredData = getFilteredData('highlights');
 
 function getItemsPerView() {
   if (window.innerWidth >= 900) return 3;
@@ -160,7 +160,6 @@ window.addEventListener('resize', () => {
 }, { passive: true });
 
 // Initial render
-currentFilteredData = getFilteredData('highlights');
 renderCarousel();
 
 // ── Show All toggle ──────────────────────────────────────────
@@ -263,3 +262,6 @@ function toggleAmenities() {
     preview.classList.add('hidden');
   }
 }
+document.querySelectorAll('.amenity-toggle').forEach(btn =>
+  btn.addEventListener('click', toggleAmenities)
+);

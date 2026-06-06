@@ -2,7 +2,6 @@
 :root {
   --cream:   #F5F0E8;
   --cream2:  #EDE6D8;
-  --gold:    #8B6914;
   --gold-lt: #C4A84F;
   --brown:   #2C2416;
   --brown-lt:#5A4830;
@@ -251,10 +250,8 @@ section { padding: 6rem 2rem; }
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.5rem;
-  margin-bottom: 2.5rem;
+  margin: 0 auto 2.5rem;
   max-width: 1300px;
-  margin-left: auto;
-  margin-right: auto;
 }
 .filter-btn {
   background: none;
@@ -306,7 +303,6 @@ section { padding: 6rem 2rem; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
   transition: transform 0.5s var(--ease), filter 0.4s;
   filter: brightness(0.97);
 }
@@ -404,7 +400,6 @@ section { padding: 6rem 2rem; }
 .gallery-item img {
   width: 100%;
   height: auto;
-  display: block;
   transition: transform 0.5s var(--ease), filter 0.4s;
   filter: brightness(0.97);
 }
@@ -415,8 +410,6 @@ section { padding: 6rem 2rem; }
 }
 
 /* ─── Activities ────────────────────────────────────────── */
-#activities { background: var(--cream); }
-
 .activities-map-wrap {
   max-width: 1000px;
   margin: 0 auto 4rem;
@@ -562,15 +555,6 @@ section { padding: 6rem 2rem; }
   flex-shrink: 0;
   opacity: 0.7;
 }
-.amenities-hidden {
-  display: none;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  margin-top: 1rem;
-}
-.amenities-hidden.show {
-  display: flex;
-}
 .amenity-toggle {
   background: none;
   border: none;
@@ -626,7 +610,6 @@ section { padding: 6rem 2rem; }
   object-fit: contain;
   flex-shrink: 0;
   opacity: 0.7;
-  display: block;
   max-width: none;
 }
 
