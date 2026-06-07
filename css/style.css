@@ -63,7 +63,7 @@ address { font-style: normal; }
   font-size: 1.15rem;
   font-weight: 400;
   letter-spacing: 0.04em;
-  color: var(--white);
+  color: var(--cream);
   transition: color 0.3s;
   white-space: nowrap;
 }
@@ -79,7 +79,7 @@ address { font-style: normal; }
   font-weight: 400;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--white);
+  color: var(--cream);
   position: relative;
   transition: color 0.3s;
 }
@@ -100,7 +100,7 @@ address { font-style: normal; }
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: var(--white);
+  color: var(--cream);
   cursor: pointer;
   transition: color 0.3s;
 }
@@ -154,7 +154,7 @@ address { font-style: normal; }
 .hero-content {
   position: relative;
   text-align: center;
-  color: var(--white);
+  color: var(--cream);
   padding: 0 1.5rem;
   display: flex;
   flex-direction: column;
@@ -191,7 +191,7 @@ address { font-style: normal; }
   font-size: 0.75rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--white);
+  color: var(--cream);
   transition: background 0.3s, border-color 0.3s;
 }
 .btn-outline:hover {
@@ -204,7 +204,7 @@ address { font-style: normal; }
   left: 50%;
   transform: translateX(-50%);
   font-size: 2rem;
-  color: rgba(255,255,255,0.6);
+  color: rgba(245,240,232,0.6);
   animation: bounce 2.2s infinite;
   line-height: 1;
 }
