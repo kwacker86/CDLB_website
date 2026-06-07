@@ -350,3 +350,101 @@ function toggleAmenities() {
 document.querySelectorAll('.amenity-toggle').forEach(btn =>
   btn.addEventListener('click', toggleAmenities)
 );
+
+// ── Booking form ────────────────────────────────────────────
+const MONTH_NAMES = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+
+function toISODate(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+// "15 August – 22 August 2026" (year shown once, or on both sides if the stay spans new year)
+function formatBookingDateRange(checkinISO, checkoutISO) {
+  const ci = new Date(`${checkinISO}T00:00:00`);
+  const co = new Date(`${checkoutISO}T00:00:00`);
+  const sameYear = ci.getFullYear() === co.getFullYear();
+  const ciLabel = `${ci.getDate()} ${MONTH_NAMES[ci.getMonth()]}` + (sameYear ? '' : ` ${ci.getFullYear()}`);
+  const coLabel = `${co.getDate()} ${MONTH_NAMES[co.getMonth()]} ${co.getFullYear()}`;
+  return `${ciLabel} – ${coLabel}`;
+}
+
+const checkinInput       = document.getElementById('checkinDate');
+const checkoutSelect     = document.getElementById('checkoutDate');
+const bookingForm        = document.getElementById('bookingForm');
+const bookingConfirm     = document.getElementById('bookingConfirmation');
+const bookingConfirmText = document.getElementById('bookingConfirmationText');
+
+const CHECKOUT_WEEKS_OFFERED = 4;
+
+function resetCheckoutOptions() {
+  checkoutSelect.innerHTML = '<option value="" selected disabled>Select a check-in date first</option>';
+  checkoutSelect.disabled = true;
+}
+
+// Stays run Saturday-to-Saturday in full-week blocks — offer checkout dates as whole-week multiples of check-in
+function populateCheckoutOptions(checkinISO) {
+  const checkin = new Date(`${checkinISO}T00:00:00`);
+  checkoutSelect.innerHTML = '<option value="" selected disabled>Select a check-out date</option>';
+  for (let weeks = 1; weeks <= CHECKOUT_WEEKS_OFFERED; weeks++) {
+    const checkout = new Date(checkin);
+    checkout.setDate(checkout.getDate() + weeks * 7);
+    const opt = document.createElement('option');
+    opt.value = toISODate(checkout);
+    opt.textContent = `${weeks} week${weeks > 1 ? 's' : ''} — ${checkout.getDate()} ${MONTH_NAMES[checkout.getMonth()]} ${checkout.getFullYear()}`;
+    checkoutSelect.appendChild(opt);
+  }
+  checkoutSelect.disabled = false;
+}
+
+// Calendar restricted to Saturdays only — every other date is greyed out and unclickable
+flatpickr(checkinInput, {
+  dateFormat: 'Y-m-d',
+  altInput: true,
+  altFormat: 'j F Y',
+  minDate: 'today',
+  disable: [date => date.getDay() !== 6],
+  onChange: (selectedDates, dateStr) => {
+    if (dateStr) {
+      populateCheckoutOptions(dateStr);
+    } else {
+      resetCheckoutOptions();
+    }
+  }
+});
+
+bookingForm.addEventListener('submit', e => {
+  e.preventDefault();
+  if (!bookingForm.reportValidity()) return;
+
+  const checkinISO  = checkinInput.value;
+  const checkoutISO = checkoutSelect.value;
+  const submitBtn   = bookingForm.querySelector('.btn-submit');
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending…';
+
+  fetch(bookingForm.action, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify(Object.fromEntries(new FormData(bookingForm)))
+  })
+    .then(res => {
+      if (!res.ok) throw new Error('Request failed');
+      bookingConfirmText.textContent =
+        `Thank you for your request. We have received your inquiry for: ${formatBookingDateRange(checkinISO, checkoutISO)}. We will review availability and get back to you shortly.`;
+      bookingForm.hidden = true;
+      bookingConfirm.hidden = false;
+      bookingConfirm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    })
+    .catch(() => {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Request Booking';
+      alert('Something went wrong sending your request. Please try again, or email us directly at info@casadellupinobianco.com.');
+    });
+});

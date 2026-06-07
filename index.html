@@ -33,7 +33,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=7" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <link rel="stylesheet" href="css/style.css?v=26" />
 </head>
 <body>
 
@@ -47,18 +48,20 @@
       <nav>
         <a href="#pictures">Gallery</a>
         <a href="#rental">Rental</a>
+        <a href="#booking">Booking</a>
         <a href="#activities">Activities</a>
+        <a href="#faq">FAQ</a>
         <a href="#about">About Us</a>
-        <a href="#contact">Contact</a>
       </nav>
       <button class="burger" aria-label="Menu">&#9776;</button>
     </div>
     <div class="mobile-menu">
       <a href="#pictures">Gallery</a>
       <a href="#rental">Rental</a>
+      <a href="#booking">Booking</a>
       <a href="#activities">Activities</a>
+      <a href="#faq">FAQ</a>
       <a href="#about">About Us</a>
-      <a href="#contact">Contact</a>
     </div>
   </header>
 
@@ -160,24 +163,25 @@
     </div>
     <div class="rental-info">
       <div class="rental-row">
+        <div class="rental-label">Address</div>
+        <div class="rental-detail">
+          <address class="rental-address">
+            Strada Gianola 17, 14040 Castel Boglione, Italy
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Strada+Gianola+17%2C+14040+Castel+Boglione%2C+Italy" target="_blank" rel="noopener" class="rental-address-link">Open in Google Maps ↗</a>
+          </address>
+        </div>
+      </div>
+      <div class="rental-row">
         <div class="rental-label">Accommodation</div>
-        <div class="rental-detail">The house accommodates a maximum of 12 guests across 5 bedrooms. One bedroom features a loft with an additional bed. Three modern bathrooms with showers are available for guests.</div>
+        <div class="rental-detail">The house accommodates 10 to 12 guests across 5 bedrooms. One bedroom features a loft with an additional bed. Three modern bathrooms with showers are available for guests.</div>
       </div>
       <div class="rental-row">
         <div class="rental-label">Minimum Stay</div>
-        <div class="rental-detail">We welcome guests for a minimum of one week. Check-in is at 16:00 on Saturday and check-out is at 10:00 the following Saturday.</div>
+        <div class="rental-detail">We welcome guests for a minimum of one week. Check-in is at 16:00 on Saturday and check-out is at 10:00 the following Saturday. Shorter stays may be available during selected low-season periods.</div>
       </div>
       <div class="rental-row">
-        <div class="rental-label">Availability</div>
-        <div class="rental-detail">The house is available for rent throughout the year. Please check availability with us.</div>
-      </div>
-      <div class="rental-row">
-        <div class="rental-label">Prices</div>
-        <div class="rental-detail">Rental prices vary by season. Please reach out to us for current pricing information.</div>
-      </div>
-      <div class="rental-row">
-        <div class="rental-label">Booking</div>
-        <div class="rental-detail">All bookings are made directly with the owners. Please reach out to us at <a href="mailto:info@casadellupinobianco.com">info@casadellupinobianco.com</a> to check availability and discuss your stay.</div>
+        <div class="rental-label">Price &amp; Availability</div>
+        <div class="rental-detail">The house is available for rent throughout the year. Rental prices vary by season. <a href="#booking">Check availability</a></div>
       </div>
       <div class="rental-row">
         <div class="rental-label">Amenities</div>
@@ -268,6 +272,109 @@
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- BOOKING -->
+  <section id="booking">
+    <div class="section-header">
+      <h2>Booking</h2>
+      <p class="section-sub">Send us a request and we'll get back to you with availability and pricing for your stay.</p>
+    </div>
+
+    <form id="bookingForm" class="booking-form" action="https://formsubmit.co/ajax/info@casadellupinobianco.com" method="POST" novalidate>
+      <input type="hidden" name="_subject" value="New booking request — Casa del Lupino Bianco" />
+      <input type="hidden" name="_template" value="table" />
+      <input type="hidden" name="_captcha" value="false" />
+
+      <div class="form-section">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="checkinDate">Check-in Date *</label>
+            <input type="text" id="checkinDate" name="Check-in Date" placeholder="Select a Saturday" autocomplete="off" required />
+            <p class="field-hint">Check-in is always on a Saturday.</p>
+          </div>
+          <div class="form-field">
+            <label for="checkoutDate">Check-out Date *</label>
+            <select id="checkoutDate" name="Check-out Date" required disabled>
+              <option value="" selected disabled>Select a check-in date first</option>
+            </select>
+            <p class="field-hint">Stays run in full-week blocks — one week minimum, four weeks maximum.</p>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field form-field-narrow">
+            <label for="guestCount">Number of Guests <span class="optional">(including children)</span> *</label>
+            <select id="guestCount" name="Number of Guests" required>
+              <option value="" selected disabled>Select&hellip;</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label>Pets</label>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="Pets" value="No pets" checked /> No pets</label>
+              <label class="radio-option"><input type="radio" name="Pets" value="Bringing a dog" /> Bringing a dog</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="form-section-title">Guest Information</h3>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="firstName">First Name *</label>
+            <input type="text" id="firstName" name="First Name" autocomplete="given-name" required />
+          </div>
+          <div class="form-field">
+            <label for="lastName">Last Name *</label>
+            <input type="text" id="lastName" name="Last Name" autocomplete="family-name" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" name="Email Address" autocomplete="email" required />
+          </div>
+          <div class="form-field">
+            <label for="phone">Phone Number <span class="optional">(optional)</span></label>
+            <input type="tel" id="phone" name="Phone Number" autocomplete="tel" />
+          </div>
+        </div>
+        <div class="form-field form-field-half">
+          <label for="country">Country of Residence *</label>
+          <input type="text" id="country" name="Country of Residence" autocomplete="country-name" required />
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="form-section-title">Additional Information</h3>
+        <div class="form-field">
+          <label for="message">Message <span class="optional">(optional)</span></label>
+          <textarea id="message" name="Message" rows="4"></textarea>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">Request Booking</button>
+    </form>
+
+    <div class="booking-confirmation" id="bookingConfirmation" hidden>
+      <p id="bookingConfirmationText"></p>
+      <p class="booking-confirmation-notice">This is a booking request only and does not constitute a confirmed reservation. We will contact you within 24&ndash;48 hours to confirm availability and pricing.</p>
     </div>
   </section>
 
@@ -366,6 +473,46 @@
     </div>
   </section>
 
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="section-header">
+      <h2>Frequently Asked Questions</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>What is the nearest airport?</summary>
+        <div class="faq-answer"><p>You can choose between Milan Malpensa, Milan Linate and Turin Airport, all of which are approximately 1 hour and 30 minutes from the house by car.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Is the house accessible by public transport?</summary>
+        <div class="faq-answer"><p>Not directly. There are regular train connections from Milan to Alessandria, which is approximately 40 minutes from the house by car. If you are not arriving by car, we recommend renting one at the airport or in Alessandria, as a car is essential for exploring Piedmont and the surrounding area.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Is the swimming pool private?</summary>
+        <div class="faq-answer"><p>Yes. The pool is exclusively for the use of guests staying at Casa del Lupino Bianco.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Are pets allowed?</summary>
+        <div class="faq-answer"><p>Well-behaved dogs are welcome upon request. Please contact us before booking so we can discuss your stay and any specific requirements.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Does the house have air conditioning?</summary>
+        <div class="faq-answer"><p>No, the house does not have air conditioning. Fans and mosquito nets are provided in all bedrooms.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>The property address appears different on Google Maps. Which address should I use?</summary>
+        <div class="faq-answer"><p>For the most accurate directions, we recommend entering &ldquo;Casa del Lupino Bianco&rdquo; into Google Maps rather than the street address. This will navigate directly to the property using its coordinates.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>What is the layout of the bedrooms and bathrooms?</summary>
+        <div class="faq-answer">
+          <p>Upstairs, there is a primary bedroom with an en-suite bathroom, as well as three additional bedrooms that share a second bathroom. One of these bedrooms also features a loft with two additional mattresses, allowing accommodation for up to 12 guests in total. The loft is accessed via a steep ladder and may not be suitable for young children, elderly guests, or anyone with limited mobility.</p>
+          <p>On the ground floor, there is one bedroom and a third bathroom.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
   <!-- ABOUT US -->
   <section id="about">
     <div class="section-header">
@@ -421,6 +568,7 @@
     </div>
   </div>
 
-  <script src="js/main.js?v=7"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="js/main.js?v=26"></script>
 </body>
 </html>

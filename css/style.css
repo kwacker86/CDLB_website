@@ -485,7 +485,7 @@ section { padding: 6rem 2rem; }
 }
 
 /* ─── Rental ────────────────────────────────────────────── */
-#rental { background: var(--cream2); }
+#rental { background: var(--cream2); padding-bottom: 3rem; }
 .rental-illustration {
   display: flex;
   justify-content: center;
@@ -495,6 +495,16 @@ section { padding: 6rem 2rem; }
   width: 280px;
   max-width: 100%;
   opacity: 0.9;
+}
+.rental-address {
+  font-style: normal;
+}
+.rental-detail a.rental-address-link {
+  display: inline-block;
+  margin-left: 1.5rem;
+  color: var(--brown);
+  text-decoration: none;
+  white-space: nowrap;
 }
 .rental-info {
   max-width: 900px;
@@ -614,8 +624,177 @@ section { padding: 6rem 2rem; }
   color: var(--brown-lt);
 }
 
+/* ─── Booking ───────────────────────────────────────────── */
+#booking { background: var(--cream2); padding-top: 3rem; }
+
+/* Flatpickr (check-in calendar) — themed to match the site palette */
+.flatpickr-calendar {
+  font-family: var(--sans);
+  box-shadow: 0 6px 30px rgba(44,36,22,0.18);
+  border-radius: 0;
+}
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover {
+  background: var(--brown);
+  border-color: var(--brown);
+}
+.flatpickr-day:hover { background: var(--cream2); }
+.flatpickr-day.today { border-color: var(--gold-lt); }
+.flatpickr-day.flatpickr-disabled,
+.flatpickr-day.flatpickr-disabled:hover {
+  color: rgba(101,67,33,0.25);
+  background: none;
+  cursor: not-allowed;
+}
+.flatpickr-months .flatpickr-month,
+.flatpickr-current-month .flatpickr-monthDropdown-months,
+.flatpickr-weekdays { background: var(--cream2); }
+span.flatpickr-weekday { color: var(--brown-lt); }
+.flatpickr-current-month .flatpickr-monthDropdown-months,
+.flatpickr-current-month input.cur-year { color: var(--brown); }
+.flatpickr-months .flatpickr-prev-month:hover svg,
+.flatpickr-months .flatpickr-next-month:hover svg { fill: var(--brown); }
+
+.booking-form {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2.75rem;
+}
+.booking-form[hidden] { display: none; }
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.form-section-title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.2rem;
+  letter-spacing: 0.03em;
+  color: var(--brown);
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid rgba(101,67,33,0.2);
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.form-field label {
+  font-family: var(--sans);
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brown);
+}
+.form-field label .optional {
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: 0.78rem;
+  color: var(--brown-lt);
+}
+.form-field input,
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  color: var(--brown);
+  background: var(--cream);
+  border: 1px solid rgba(101,67,33,0.28);
+  padding: 0.75rem 0.95rem;
+  transition: border-color 0.25s;
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: var(--brown);
+}
+.form-field textarea {
+  resize: vertical;
+  min-height: 110px;
+  font-family: inherit;
+  line-height: 1.6;
+}
+.form-field select { cursor: pointer; }
+.form-field select:disabled { cursor: not-allowed; opacity: 0.6; }
+.form-field-narrow select { width: auto; min-width: 6rem; align-self: flex-start; }
+.form-field-half input { max-width: calc(50% - 0.75rem); }
+@media (max-width: 600px) {
+  .form-field-half input { max-width: 100%; }
+}
+.field-hint {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.8rem;
+  color: var(--brown-lt);
+}
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 2rem;
+}
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  color: var(--brown-lt);
+  cursor: pointer;
+}
+.radio-option input { width: auto; accent-color: var(--brown); cursor: pointer; }
+
+.btn-submit {
+  align-self: center;
+  margin-top: 0.5rem;
+  padding: 0.95rem 3.2rem;
+  background: var(--brown);
+  border: 1px solid var(--brown);
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cream);
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, border-color 0.3s;
+}
+.btn-submit:hover { background: transparent; color: var(--brown); }
+.btn-submit:disabled { opacity: 0.55; cursor: default; }
+
+.booking-confirmation {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 3rem 2.2rem;
+  border: 1px solid rgba(101,67,33,0.25);
+  background: rgba(245,240,232,0.6);
+}
+.booking-confirmation[hidden] { display: none; }
+.booking-confirmation p {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  line-height: 1.85;
+  color: var(--brown-lt);
+}
+.booking-confirmation p.booking-confirmation-notice {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(101,67,33,0.2);
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
 /* ─── About Us ──────────────────────────────────────────── */
-#about { background: var(--cream2); }
 .about-block {
   max-width: 1000px;
   margin: 0 auto;
@@ -632,20 +811,64 @@ section { padding: 6rem 2rem; }
   font-family: var(--serif);
   font-size: 1.2rem;
   line-height: 1.85;
-  color: var(--brown-lt);
+  color: rgba(245,240,232,0.8);
 }
 @media (max-width: 800px) {
   .about-block { grid-template-columns: 1fr; gap: 2rem; }
   .about-image img { max-width: 420px; margin: 0 auto; }
 }
 
-/* ─── Green theme (Pictures & Activities) ──────────────── */
-#pictures, #activities {
+/* ─── FAQ ───────────────────────────────────────────────── */
+.faq-list {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+.faq-item {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(101,67,33,0.2);
+}
+.faq-item:first-child { border-top: 1px solid rgba(101,67,33,0.2); }
+.faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--brown);
+  cursor: pointer;
+  list-style: none;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: '+';
+  flex-shrink: 0;
+  font-family: var(--sans);
+  font-size: 1.3rem;
+  line-height: 1;
+  color: var(--gold-lt);
+}
+.faq-item[open] summary::after { content: '\2212'; }
+.faq-answer {
+  margin-top: 1rem;
+  max-width: 680px;
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: var(--brown-lt);
+}
+
+/* ─── Green theme (Pictures, Activities & About Us) ────── */
+#pictures, #activities, #about {
   background: #1c3e29;
   color: var(--cream);
 }
 #pictures .section-header h2,
-#activities .section-header h2 { color: var(--cream); }
+#activities .section-header h2,
+#about .section-header h2 { color: var(--cream); }
 #pictures .section-sub,
 #activities .section-sub { color: rgba(245,240,232,0.65); }
 #pictures .key-highlights { color: rgba(245,240,232,0.85); }
@@ -852,6 +1075,7 @@ footer p {
   }
   .carousel-mobile-arrow:disabled { opacity: 0.25; cursor: default; }
   .rental-row { grid-template-columns: 1fr; gap: 0.4rem; }
+  .form-row { grid-template-columns: 1fr; gap: 1.5rem; }
   .contact-divider { width: 60px; height: 1px; }
   .lb-prev { left: 0.5rem; }
   .lb-next { right: 0.5rem; }
