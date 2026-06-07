@@ -629,6 +629,31 @@ section { padding: 6rem 2rem; }
   color: var(--brown-lt);
 }
 
+/* ─── About Us ──────────────────────────────────────────── */
+#about { background: var(--cream2); }
+.about-block {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+.about-image img {
+  width: 100%;
+  border-radius: 4px;
+}
+.about-text p {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  line-height: 1.85;
+  color: var(--brown-lt);
+}
+@media (max-width: 800px) {
+  .about-block { grid-template-columns: 1fr; gap: 2rem; }
+  .about-image img { max-width: 420px; margin: 0 auto; }
+}
+
 /* ─── Contact ───────────────────────────────────────────── */
 #contact {
   background: #1c3e29;
