@@ -789,9 +789,6 @@ span.flatpickr-weekday { color: var(--brown-lt); }
   margin-top: 1.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid rgba(101,67,33,0.2);
-  font-family: var(--sans);
-  font-size: 0.85rem;
-  line-height: 1.7;
 }
 
 /* ─── About Us ──────────────────────────────────────────── */
