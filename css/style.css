@@ -654,6 +654,40 @@ section { padding: 6rem 2rem; }
   .about-image img { max-width: 420px; margin: 0 auto; }
 }
 
+/* ─── Green theme (Pictures & Activities) ──────────────── */
+#pictures, #activities {
+  background: #1c3e29;
+  color: var(--cream);
+}
+#pictures .section-header h2,
+#activities .section-header h2 { color: var(--cream); }
+#pictures .section-sub,
+#activities .section-sub { color: rgba(245,240,232,0.65); }
+#pictures .key-highlights { color: rgba(245,240,232,0.85); }
+
+#pictures .filter-btn {
+  border-color: rgba(245,240,232,0.35);
+  color: rgba(245,240,232,0.75);
+}
+#pictures .filter-btn:hover,
+#pictures .filter-btn.active {
+  background: var(--cream);
+  border-color: var(--cream);
+  color: var(--brown);
+}
+#pictures .carousel-arrow,
+#pictures .carousel-mobile-arrow {
+  border-color: rgba(245,240,232,0.35);
+  color: var(--cream);
+}
+#pictures .carousel-arrow:hover:not(:disabled),
+#pictures .carousel-mobile-arrow:hover:not(:disabled) {
+  background: var(--cream);
+  border-color: var(--cream);
+  color: var(--brown);
+}
+#pictures .carousel-counter { color: rgba(245,240,232,0.6); }
+
 /* ─── Contact ───────────────────────────────────────────── */
 #contact {
   background: #1c3e29;
