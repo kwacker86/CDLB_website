@@ -364,7 +364,10 @@ function toISODate(date) {
   return `${y}-${m}-${d}`;
 }
 
-// "15 August – 22 August 2026" (year shown once, or on both sides if the stay spans new year)
+function formatDisplayDate(date) {
+  return `${date.getDate()} ${MONTH_NAMES[date.getMonth()]} ${date.getFullYear()}`;
+}
+
 function formatBookingDateRange(checkinISO, checkoutISO) {
   const ci = new Date(`${checkinISO}T00:00:00`);
   const co = new Date(`${checkoutISO}T00:00:00`);
@@ -374,58 +377,179 @@ function formatBookingDateRange(checkinISO, checkoutISO) {
   return `${ciLabel} – ${coLabel}`;
 }
 
-const checkinInput       = document.getElementById('checkinDate');
-const checkoutSelect     = document.getElementById('checkoutDate');
+const checkinHidden      = document.getElementById('checkinDate');
+const checkoutHidden     = document.getElementById('checkoutDate');
 const bookingForm        = document.getElementById('bookingForm');
 const bookingConfirm     = document.getElementById('bookingConfirmation');
 const bookingConfirmText = document.getElementById('bookingConfirmationText');
 
-const CHECKOUT_WEEKS_OFFERED = 4;
+const dateBoxCheckin   = document.getElementById('dateBoxCheckin');
+const dateBoxCheckout  = document.getElementById('dateBoxCheckout');
+const checkinDisplay   = document.getElementById('checkinDisplay');
+const checkoutDisplay  = document.getElementById('checkoutDisplay');
+const clearCheckin     = document.getElementById('clearCheckin');
+const clearCheckout    = document.getElementById('clearCheckout');
 
-function resetCheckoutOptions() {
-  checkoutSelect.innerHTML = '<option value="" selected disabled>Select a check-in date first</option>';
-  checkoutSelect.disabled = true;
+function setActiveBox(box) {
+  dateBoxCheckin.classList.toggle('date-box--active', box === 'checkin');
+  dateBoxCheckout.classList.toggle('date-box--active', box === 'checkout');
 }
 
-// Stays run Saturday-to-Saturday in full-week blocks — offer checkout dates as whole-week multiples of check-in
-function populateCheckoutOptions(checkinISO) {
-  const checkin = new Date(`${checkinISO}T00:00:00`);
-  checkoutSelect.innerHTML = '<option value="" selected disabled>Select a check-out date</option>';
-  for (let weeks = 1; weeks <= CHECKOUT_WEEKS_OFFERED; weeks++) {
-    const checkout = new Date(checkin);
-    checkout.setDate(checkout.getDate() + weeks * 7);
-    const opt = document.createElement('option');
-    opt.value = toISODate(checkout);
-    opt.textContent = `${weeks} week${weeks > 1 ? 's' : ''} — ${checkout.getDate()} ${MONTH_NAMES[checkout.getMonth()]} ${checkout.getFullYear()}`;
-    checkoutSelect.appendChild(opt);
+function clearActiveBox() {
+  dateBoxCheckin.classList.remove('date-box--active');
+  dateBoxCheckout.classList.remove('date-box--active');
+}
+
+function updateCheckinUI(date) {
+  if (date) {
+    checkinDisplay.textContent = formatDisplayDate(date);
+    checkinDisplay.classList.add('date-box__value--set');
+    clearCheckin.hidden = false;
+    checkinHidden.value = toISODate(date);
+  } else {
+    checkinDisplay.textContent = 'Add date';
+    checkinDisplay.classList.remove('date-box__value--set');
+    clearCheckin.hidden = true;
+    checkinHidden.value = '';
   }
-  checkoutSelect.disabled = false;
+  dateBoxCheckin.classList.remove('date-box--error');
 }
 
-// Calendar restricted to Saturdays only — every other date is greyed out and unclickable
-flatpickr(checkinInput, {
-  dateFormat: 'Y-m-d',
-  altInput: true,
-  altFormat: 'j F Y',
-  minDate: 'today',
-  disable: [date => date.getDay() !== 6],
-  onChange: (selectedDates, dateStr) => {
-    if (dateStr) {
-      populateCheckoutOptions(dateStr);
-    } else {
-      resetCheckoutOptions();
+function updateCheckoutUI(date) {
+  if (date) {
+    checkoutDisplay.textContent = formatDisplayDate(date);
+    checkoutDisplay.classList.add('date-box__value--set');
+    clearCheckout.hidden = false;
+    checkoutHidden.value = toISODate(date);
+  } else {
+    checkoutDisplay.textContent = 'Add date';
+    checkoutDisplay.classList.remove('date-box__value--set');
+    clearCheckout.hidden = true;
+    checkoutHidden.value = '';
+  }
+  dateBoxCheckout.classList.remove('date-box--error');
+}
+
+const SHOW_MONTHS = window.innerWidth >= 768 ? 2 : 1;
+
+let rangePicker;
+
+function blockNonSaturdays(fp) {
+  fp.calendarContainer.querySelectorAll('.flatpickr-day').forEach(dayElem => {
+    if (!dayElem.dateObj || dayElem.dateObj.getDay() === 6) return;
+    dayElem.classList.add('not-saturday');
+    if (!dayElem._satBlocked) {
+      dayElem._satBlocked = true;
+      dayElem.addEventListener('click', e => e.stopPropagation());
     }
+  });
+}
+
+rangePicker = flatpickr('#rangeFlatpickr', {
+  mode: 'range',
+  dateFormat: 'Y-m-d',
+  minDate: 'today',
+  showMonths: SHOW_MONTHS,
+  positionElement: document.getElementById('datePickerRow'),
+  disableMobile: true,
+  onOpen(_sd, _ds, fp) { blockNonSaturdays(fp); },
+  onMonthChange(_sd, _ds, fp) { blockNonSaturdays(fp); },
+  onYearChange(_sd, _ds, fp) { blockNonSaturdays(fp); },
+  onChange(selectedDates) {
+    if (selectedDates.length === 0) {
+      updateCheckinUI(null);
+      updateCheckoutUI(null);
+    } else if (selectedDates.length === 1) {
+      if (selectedDates[0].getDay() !== 6) { rangePicker.clear(); return; }
+      updateCheckinUI(selectedDates[0]);
+      updateCheckoutUI(null);
+      setActiveBox('checkout');
+      setTimeout(() => blockNonSaturdays(rangePicker), 0);
+    } else {
+      const [ci, co] = selectedDates;
+      const weeks = Math.round((co - ci) / (7 * 24 * 3600 * 1000));
+      if (weeks < 1 || weeks > 4) {
+        rangePicker.setDate([ci], false);
+        updateCheckinUI(ci);
+        updateCheckoutUI(null);
+        setActiveBox('checkout');
+        return;
+      }
+      updateCheckinUI(ci);
+      updateCheckoutUI(co);
+      clearActiveBox();
+      rangePicker.close();
+    }
+  },
+  onClose() { clearActiveBox(); }
+});
+
+// CHECK-IN box click — clears everything and restarts
+dateBoxCheckin.addEventListener('click', e => {
+  if (clearCheckin.contains(e.target)) return;
+  rangePicker.clear();
+  setActiveBox('checkin');
+  rangePicker.open();
+});
+
+// CHECKOUT box click — opens calendar; starts from check-in step if none set yet
+dateBoxCheckout.addEventListener('click', e => {
+  if (clearCheckout.contains(e.target)) return;
+  setActiveBox(checkinHidden.value ? 'checkout' : 'checkin');
+  rangePicker.open();
+});
+
+// Clear check-in: wipe both dates
+clearCheckin.addEventListener('click', e => {
+  e.stopPropagation();
+  rangePicker.clear();
+});
+
+// Clear checkout: keep check-in, re-open for new checkout
+clearCheckout.addEventListener('click', e => {
+  e.stopPropagation();
+  if (rangePicker.selectedDates.length >= 1) {
+    const ci = rangePicker.selectedDates[0];
+    rangePicker.setDate([ci], false);
+    updateCheckoutUI(null);
+    setActiveBox('checkout');
+    rangePicker.open();
+  } else {
+    rangePicker.clear();
   }
+});
+
+// Keyboard support for the date boxes
+[dateBoxCheckin, dateBoxCheckout].forEach(box => {
+  box.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); box.click(); }
+  });
 });
 
 bookingForm.addEventListener('submit', e => {
   e.preventDefault();
+
+  const checkinISO  = checkinHidden.value;
+  const checkoutISO = checkoutHidden.value;
+
+  if (!checkinISO) {
+    dateBoxCheckin.classList.add('date-box--error');
+    setActiveBox('checkin');
+    rangePicker.open();
+    dateBoxCheckin.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  if (!checkoutISO) {
+    dateBoxCheckout.classList.add('date-box--error');
+    setActiveBox('checkout');
+    rangePicker.open();
+    dateBoxCheckout.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
   if (!bookingForm.reportValidity()) return;
 
-  const checkinISO  = checkinInput.value;
-  const checkoutISO = checkoutSelect.value;
-  const submitBtn   = bookingForm.querySelector('.btn-submit');
-
+  const submitBtn = bookingForm.querySelector('.btn-submit');
   submitBtn.disabled = true;
   submitBtn.textContent = 'Sending…';
 

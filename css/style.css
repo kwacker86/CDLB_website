@@ -627,28 +627,128 @@ section { padding: 6rem 2rem; }
 /* ─── Booking ───────────────────────────────────────────── */
 #booking { background: var(--cream2); padding-top: 3rem; }
 
-/* Flatpickr (check-in calendar) — themed to match the site palette */
+/* ─── Date Picker (Airbnb-style) ───────────────────────────── */
+.date-picker-container {
+  display: flex;
+  flex-direction: column;
+}
+.date-picker-row {
+  display: inline-flex;
+}
+.date-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1.1rem;
+  min-width: 175px;
+  background: var(--cream);
+  border: 1px solid rgba(101,67,33,0.28);
+  cursor: pointer;
+  transition: border-color 0.2s;
+  user-select: none;
+}
+.date-box + .date-box { margin-left: -1px; }
+.date-box:hover { border-color: rgba(101,67,33,0.55); z-index: 1; }
+.date-box--active {
+  border: 2px solid var(--brown);
+  position: relative;
+  z-index: 2;
+}
+.date-box--error { border-color: #b33 !important; border-width: 2px !important; }
+.date-box__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  pointer-events: none;
+}
+.date-box__label {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--brown);
+}
+.date-box__value {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  color: var(--brown-lt);
+}
+.date-box__value--set { color: var(--brown); }
+.date-box__clear {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--brown-lt);
+  cursor: pointer;
+  padding: 0.25rem 0.4rem;
+  transition: background 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+.date-box__clear:hover { color: var(--brown); }
+
+/* Invisible flatpickr anchor — flatpickr needs an input element but we don't show it */
+.date-range-flatpickr-input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  border: none;
+  padding: 0;
+  pointer-events: none;
+}
+
+/* Flatpickr popup calendar — themed to match the site palette */
 .flatpickr-calendar {
   font-family: var(--sans);
-  box-shadow: 0 6px 30px rgba(44,36,22,0.18);
+  box-shadow: 0 8px 32px rgba(44,36,22,0.18);
   border-radius: 0;
+  border: 1px solid rgba(101,67,33,0.18);
+  background: var(--cream);
 }
 .flatpickr-day.selected,
-.flatpickr-day.selected:hover {
+.flatpickr-day.selected:hover,
+.flatpickr-day.startRange,
+.flatpickr-day.startRange:hover,
+.flatpickr-day.endRange,
+.flatpickr-day.endRange:hover {
   background: var(--brown);
   border-color: var(--brown);
+  color: var(--cream);
 }
-.flatpickr-day:hover { background: var(--cream2); }
+.flatpickr-day.inRange,
+.flatpickr-day.inRange:hover {
+  background: rgba(101,67,33,0.1);
+  border-color: rgba(101,67,33,0.08);
+  box-shadow: -5px 0 0 rgba(101,67,33,0.1), 5px 0 0 rgba(101,67,33,0.1);
+  color: var(--brown);
+}
+.flatpickr-day:hover:not(.selected):not(.startRange):not(.endRange):not(.inRange) {
+  background: var(--cream2);
+}
 .flatpickr-day.today { border-color: var(--gold-lt); }
 .flatpickr-day.flatpickr-disabled,
 .flatpickr-day.flatpickr-disabled:hover {
-  color: rgba(101,67,33,0.25);
+  color: rgba(101,67,33,0.22);
   background: none;
   cursor: not-allowed;
 }
+.flatpickr-day.not-saturday {
+  color: rgba(101,67,33,0.18) !important;
+  cursor: default !important;
+}
+.flatpickr-day.not-saturday:hover { background: none !important; }
+.flatpickr-day.not-saturday.inRange,
+.flatpickr-day.not-saturday.inRange:hover {
+  background: rgba(101,67,33,0.1) !important;
+  border-color: rgba(101,67,33,0.08) !important;
+  box-shadow: -5px 0 0 rgba(101,67,33,0.1), 5px 0 0 rgba(101,67,33,0.1) !important;
+}
 .flatpickr-months .flatpickr-month,
 .flatpickr-current-month .flatpickr-monthDropdown-months,
-.flatpickr-weekdays { background: var(--cream2); }
+.flatpickr-weekdays { background: var(--cream); }
 span.flatpickr-weekday { color: var(--brown-lt); }
 .flatpickr-current-month .flatpickr-monthDropdown-months,
 .flatpickr-current-month input.cur-year { color: var(--brown); }

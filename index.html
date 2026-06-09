@@ -288,19 +288,27 @@
       <input type="hidden" name="_captcha" value="false" />
 
       <div class="form-section">
-        <div class="form-row">
-          <div class="form-field">
-            <label for="checkinDate">Check-in Date *</label>
-            <input type="text" id="checkinDate" name="Check-in Date" placeholder="Select a Saturday" autocomplete="off" required />
-            <p class="field-hint">Check-in is always on a Saturday.</p>
+        <div class="date-picker-container" id="datePickerContainer">
+          <div class="date-picker-row" id="datePickerRow">
+            <div class="date-box" id="dateBoxCheckin" role="button" tabindex="0" aria-label="Select check-in date">
+              <div class="date-box__inner">
+                <span class="date-box__label">Check-in</span>
+                <span class="date-box__value" id="checkinDisplay">Add date</span>
+              </div>
+              <button type="button" class="date-box__clear" id="clearCheckin" aria-label="Clear check-in date" hidden>&times;</button>
+            </div>
+            <div class="date-box" id="dateBoxCheckout" role="button" tabindex="0" aria-label="Select check-out date">
+              <div class="date-box__inner">
+                <span class="date-box__label">Check-out</span>
+                <span class="date-box__value" id="checkoutDisplay">Add date</span>
+              </div>
+              <button type="button" class="date-box__clear" id="clearCheckout" aria-label="Clear check-out date" hidden>&times;</button>
+            </div>
           </div>
-          <div class="form-field">
-            <label for="checkoutDate">Check-out Date *</label>
-            <select id="checkoutDate" name="Check-out Date" required disabled>
-              <option value="" selected disabled>Select a check-in date first</option>
-            </select>
-            <p class="field-hint">Stays run in full-week blocks — one week minimum, four weeks maximum.</p>
-          </div>
+          <input type="text" id="rangeFlatpickr" class="date-range-flatpickr-input" aria-hidden="true" tabindex="-1" readonly />
+          <input type="hidden" id="checkinDate" name="Check-in Date" />
+          <input type="hidden" id="checkoutDate" name="Check-out Date" />
+          <p class="field-hint">Check-in and check-out are always on Saturdays. Stays run in full-week blocks (1–4 weeks).</p>
         </div>
 
         <div class="form-row">
