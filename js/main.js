@@ -432,15 +432,76 @@ function updateCheckoutUI(date) {
 
 const SHOW_MONTHS = window.innerWidth >= 768 ? 2 : 1;
 
+// ── Availability data ────────────────────────────────────────
+let bookedRanges = [];
+fetch('data/bookings.json')
+  .then(r => r.json())
+  .then(data => { bookedRanges = data.booked || []; })
+  .catch(() => { bookedRanges = []; });
+
+function isBookedSaturday(d) {
+  for (const r of bookedRanges) {
+    const from = new Date(r.from + 'T00:00:00');
+    const to   = new Date(r.to   + 'T00:00:00');
+    if (d >= from && d < to) return true;
+  }
+  return false;
+}
+
+function maxCheckoutDate(ci) {
+  let max = new Date(ci);
+  max.setDate(max.getDate() + 28);
+  for (const r of bookedRanges) {
+    const from = new Date(r.from + 'T00:00:00');
+    if (from > ci && from < max) max = from;
+  }
+  return max;
+}
+
+function stayOverlapsBooking(ci, co) {
+  for (const r of bookedRanges) {
+    const from = new Date(r.from + 'T00:00:00');
+    const to   = new Date(r.to   + 'T00:00:00');
+    if (ci < to && co > from) return true;
+  }
+  return false;
+}
+
 let rangePicker;
 
-function blockNonSaturdays(fp) {
+function updateCalendarDays(fp) {
+  const hasCheckin = !!checkinHidden.value;
+  const maxCo = hasCheckin ? maxCheckoutDate(new Date(checkinHidden.value + 'T00:00:00')) : null;
+
   fp.calendarContainer.querySelectorAll('.flatpickr-day').forEach(dayElem => {
-    if (!dayElem.dateObj || dayElem.dateObj.getDay() === 6) return;
-    dayElem.classList.add('not-saturday');
-    if (!dayElem._satBlocked) {
-      dayElem._satBlocked = true;
-      dayElem.addEventListener('click', e => e.stopPropagation());
+    if (!dayElem.dateObj) return;
+    const d = dayElem.dateObj;
+
+    if (!dayElem._listenerAdded) {
+      dayElem._listenerAdded = true;
+      dayElem.addEventListener('click', e => { if (dayElem._blocked) e.stopPropagation(); });
+    }
+
+    dayElem.classList.remove('not-saturday', 'is-booked');
+    dayElem.removeAttribute('title');
+    dayElem._blocked = false;
+
+    if (d.getDay() !== 6) {
+      dayElem.classList.add('not-saturday');
+      dayElem._blocked = true;
+      return;
+    }
+
+    if (isBookedSaturday(d)) {
+      dayElem.classList.add('is-booked');
+      dayElem.title = 'Booked';
+      if (!hasCheckin || (maxCo && d > maxCo)) dayElem._blocked = true;
+      return;
+    }
+
+    if (maxCo && d > maxCo) {
+      dayElem.classList.add('not-saturday');
+      dayElem._blocked = true;
     }
   });
 }
@@ -452,27 +513,29 @@ rangePicker = flatpickr('#rangeFlatpickr', {
   showMonths: SHOW_MONTHS,
   positionElement: document.getElementById('datePickerRow'),
   disableMobile: true,
-  onOpen(_sd, _ds, fp) { blockNonSaturdays(fp); },
-  onMonthChange(_sd, _ds, fp) { blockNonSaturdays(fp); },
-  onYearChange(_sd, _ds, fp) { blockNonSaturdays(fp); },
+  onOpen(_sd, _ds, fp) { updateCalendarDays(fp); },
+  onMonthChange(_sd, _ds, fp) { updateCalendarDays(fp); },
+  onYearChange(_sd, _ds, fp) { updateCalendarDays(fp); },
   onChange(selectedDates) {
     if (selectedDates.length === 0) {
       updateCheckinUI(null);
       updateCheckoutUI(null);
+      setTimeout(() => updateCalendarDays(rangePicker), 0);
     } else if (selectedDates.length === 1) {
       if (selectedDates[0].getDay() !== 6) { rangePicker.clear(); return; }
       updateCheckinUI(selectedDates[0]);
       updateCheckoutUI(null);
       setActiveBox('checkout');
-      setTimeout(() => blockNonSaturdays(rangePicker), 0);
+      setTimeout(() => updateCalendarDays(rangePicker), 0);
     } else {
       const [ci, co] = selectedDates;
       const weeks = Math.round((co - ci) / (7 * 24 * 3600 * 1000));
-      if (weeks < 1 || weeks > 4) {
+      if (weeks < 1 || weeks > 4 || stayOverlapsBooking(ci, co)) {
         rangePicker.setDate([ci], false);
         updateCheckinUI(ci);
         updateCheckoutUI(null);
         setActiveBox('checkout');
+        setTimeout(() => updateCalendarDays(rangePicker), 0);
         return;
       }
       updateCheckinUI(ci);

@@ -746,6 +746,20 @@ section { padding: 6rem 2rem; }
   border-color: rgba(101,67,33,0.08) !important;
   box-shadow: -5px 0 0 rgba(101,67,33,0.1), 5px 0 0 rgba(101,67,33,0.1) !important;
 }
+.flatpickr-day.is-booked,
+.flatpickr-day.is-booked:hover {
+  background: rgba(160,50,50,0.07) !important;
+  color: rgba(160,50,50,0.7) !important;
+  cursor: not-allowed !important;
+}
+.flatpickr-day.is-booked.startRange,
+.flatpickr-day.is-booked.startRange:hover,
+.flatpickr-day.is-booked.endRange,
+.flatpickr-day.is-booked.endRange:hover {
+  background: var(--brown) !important;
+  color: var(--cream) !important;
+  cursor: pointer !important;
+}
 .flatpickr-months .flatpickr-month,
 .flatpickr-current-month .flatpickr-monthDropdown-months,
 .flatpickr-weekdays { background: var(--cream); }
