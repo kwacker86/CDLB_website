@@ -1041,11 +1041,9 @@ span.flatpickr-weekday { color: var(--brown-lt); }
   font-size: 1.35rem;
   font-weight: 300;
   color: var(--cream);
-  border-bottom: 1px solid rgba(196,168,79,0.4);
-  padding-bottom: 2px;
-  transition: border-color 0.3s;
+  transition: color 0.3s;
 }
-.contact-item a[href^="mailto"]:hover { border-color: var(--gold-lt); }
+.contact-item a[href^="mailto"]:hover { color: var(--gold-lt); }
 .contact-item address {
   font-family: var(--serif);
   font-size: 1.1rem;
