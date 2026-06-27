@@ -54,7 +54,7 @@ address { font-style: normal; }
 .nav-logo img {
   height: 42px;
   width: auto;
-  filter: brightness(0) saturate(100%) invert(38%) sepia(39%) saturate(600%) hue-rotate(25deg) brightness(80%);
+  filter: brightness(0) invert(1) sepia(5%) brightness(0.97);
   transition: filter 0.3s;
 }
 #nav.scrolled .nav-logo img { filter: none; }
@@ -1138,6 +1138,7 @@ footer p {
   }
   #nav nav { display: none; }
   .burger { display: block; }
+  .nav-logo span { display: none; }
 }
 @media (max-width: 600px) {
   .gallery { columns: 1; }
