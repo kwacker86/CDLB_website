@@ -16,6 +16,15 @@ mobileMenu.querySelectorAll('a').forEach(a =>
 // Hero subtle zoom on load
 document.getElementById('hero').classList.add('loaded');
 
+// Force hero video autoplay (some iOS browsers block the autoplay attribute)
+const heroVideo = document.querySelector('.hero-video');
+if (heroVideo) {
+  const tryPlay = () => heroVideo.play().catch(() => {});
+  tryPlay();
+  document.addEventListener('touchstart', tryPlay, { once: true });
+  document.addEventListener('click', tryPlay, { once: true });
+}
+
 // Footer year
 document.getElementById('year').textContent = new Date().getFullYear();
 
