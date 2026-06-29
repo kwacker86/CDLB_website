@@ -34,7 +34,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
-  <link rel="stylesheet" href="css/style.css?v=32" />
+  <link rel="stylesheet" href="css/style.css?v=33" />
 </head>
 <body>
 
@@ -391,6 +391,14 @@
         </div>
       </div>
 
+      <div class="privacy-consent">
+        <label class="privacy-consent-label">
+          <input type="checkbox" id="privacyConsent" />
+          <span>I have read and accept the <a href="privacy-policy.html" target="_blank" rel="noopener">Privacy Policy</a> and consent to my personal data being processed for the purpose of this booking request.</span>
+        </label>
+        <p class="privacy-consent-error" id="privacyConsentError" hidden>You must accept the Privacy Policy to submit a booking request.</p>
+      </div>
+
       <button type="submit" class="btn-submit">Request Booking</button>
     </form>
 
@@ -594,6 +602,7 @@
   <footer>
     <img src="images/logo.png" alt="Casa del Lupino Bianco" class="footer-logo" />
     <p>&copy; <span id="year"></span> Casa del Lupino Bianco &mdash; casadellupinobianco.com</p>
+    <p><a href="privacy-policy.html" class="footer-privacy-link">Privacy Policy</a></p>
   </footer>
 
   <!-- LIGHTBOX -->
@@ -607,6 +616,6 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script src="js/main.js?v=28"></script>
+  <script src="js/main.js?v=29"></script>
 </body>
 </html>

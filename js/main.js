@@ -386,11 +386,17 @@ function formatBookingDateRange(checkinISO, checkoutISO) {
   return `${ciLabel} – ${coLabel}`;
 }
 
-const checkinHidden      = document.getElementById('checkinDate');
-const checkoutHidden     = document.getElementById('checkoutDate');
-const bookingForm        = document.getElementById('bookingForm');
-const bookingConfirm     = document.getElementById('bookingConfirmation');
-const bookingConfirmText = document.getElementById('bookingConfirmationText');
+const checkinHidden       = document.getElementById('checkinDate');
+const checkoutHidden      = document.getElementById('checkoutDate');
+const bookingForm         = document.getElementById('bookingForm');
+const bookingConfirm      = document.getElementById('bookingConfirmation');
+const bookingConfirmText  = document.getElementById('bookingConfirmationText');
+const privacyConsent      = document.getElementById('privacyConsent');
+const privacyConsentError = document.getElementById('privacyConsentError');
+
+privacyConsent.addEventListener('change', () => {
+  if (privacyConsent.checked) privacyConsentError.hidden = true;
+});
 
 const dateBoxCheckin   = document.getElementById('dateBoxCheckin');
 const dateBoxCheckout  = document.getElementById('dateBoxCheckout');
@@ -620,6 +626,12 @@ bookingForm.addEventListener('submit', e => {
   }
 
   if (!bookingForm.reportValidity()) return;
+
+  if (!privacyConsent.checked) {
+    privacyConsentError.hidden = false;
+    privacyConsentError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
 
   const submitBtn = bookingForm.querySelector('.btn-submit');
   submitBtn.disabled = true;
