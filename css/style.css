@@ -51,13 +51,53 @@ address { font-style: normal; }
   align-items: center;
   gap: 0.7rem;
 }
-.nav-logo img {
+.logo-mark {
+  position: relative;
+  display: block;
+  width: 50px;
   height: 42px;
-  width: auto;
+  perspective: 700px;
+  perspective-origin: 63% 50%;
+}
+.logo-mark img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   filter: brightness(0) invert(1) sepia(5%) brightness(0.97);
   transition: filter 0.3s;
 }
-#nav.scrolled .nav-logo img { filter: none; }
+#nav.scrolled .logo-mark img { filter: none; }
+.logo-leaf {
+  z-index: 1;
+  transform-origin: 37% 91%;
+}
+.logo-nut {
+  z-index: 2;
+  transform-style: preserve-3d;
+  transform-origin: 63% 50%;
+}
+.nav-logo:hover .logo-leaf {
+  animation: nav-logo-sway 4.5s ease-in-out infinite;
+}
+.nav-logo:hover .logo-nut {
+  animation: nav-logo-spin 4.5s linear infinite;
+}
+@keyframes nav-logo-sway {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(-7deg); }
+}
+@keyframes nav-logo-spin {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-logo:hover .logo-leaf,
+  .nav-logo:hover .logo-nut {
+    animation: none;
+  }
+}
 .nav-logo span {
   font-family: var(--serif);
   font-size: 1.15rem;
