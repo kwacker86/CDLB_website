@@ -12,38 +12,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=34" />
+  <link rel="stylesheet" href="css/style.css?v=40" />
 </head>
-<body>
+<body class="policy-body">
 
-  <!-- NAV -->
-  <header id="nav" class="scrolled">
-    <div class="nav-inner">
-      <a href="index.html" class="nav-logo">
-        <img src="images/logo.png" alt="Casa del Lupino Bianco" />
-        <span>Casa del Lupino Bianco</span>
-      </a>
-      <nav>
-        <a href="index.html#pictures">Gallery</a>
-        <a href="index.html#rental">Rental</a>
-        <a href="index.html#booking">Booking</a>
-        <a href="index.html#activities">Activities</a>
-        <a href="index.html#faq">FAQ</a>
-        <a href="index.html#about">About Us</a>
-        <a href="index.html#contact">Contact</a>
-      </nav>
-      <button class="burger" aria-label="Menu">&#9776;</button>
-    </div>
-    <div class="mobile-menu">
-      <a href="index.html#pictures">Gallery</a>
-      <a href="index.html#rental">Rental</a>
-      <a href="index.html#booking">Booking</a>
-      <a href="index.html#activities">Activities</a>
-      <a href="index.html#faq">FAQ</a>
-      <a href="index.html#about">About Us</a>
-      <a href="index.html#contact">Contact</a>
-    </div>
-  </header>
+  <img src="images/logo-watermark.png" alt="" class="policy-watermark" aria-hidden="true">
+
+  <div class="policy-topbar">
+    <a href="index.html" class="policy-home-btn">&#8592; Back to Website</a>
+  </div>
 
   <main class="policy-page">
     <h1>Privacy Policy</h1>
@@ -132,16 +109,6 @@
   </footer>
 
   <script>
-    const nav = document.getElementById('nav');
-    const burger = document.querySelector('.burger');
-    const mobileMenu = document.querySelector('.mobile-menu');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 60);
-    }, { passive: true });
-    burger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
-    mobileMenu.querySelectorAll('a').forEach(a =>
-      a.addEventListener('click', () => mobileMenu.classList.remove('open'))
-    );
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
