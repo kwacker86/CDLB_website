@@ -447,6 +447,11 @@ function updateCheckoutUI(date) {
 
 const SHOW_MONTHS = window.innerWidth >= 768 ? 2 : 1;
 
+// Restrict bookings to at most 18 months from today
+const MAX_BOOKING_MONTHS = 18;
+const maxBookingDate = new Date();
+maxBookingDate.setMonth(maxBookingDate.getMonth() + MAX_BOOKING_MONTHS);
+
 // ── Availability data ────────────────────────────────────────
 let bookedRanges = [];
 fetch('data/bookings.json')
@@ -470,6 +475,8 @@ function maxCheckoutDate(ci) {
     const from = new Date(r.from + 'T00:00:00');
     if (from > ci && from < max) max = from;
   }
+  // enforce global maximum booking date
+  if (max > maxBookingDate) max = new Date(maxBookingDate);
   return max;
 }
 
@@ -514,6 +521,13 @@ function updateCalendarDays(fp) {
       return;
     }
 
+    // block dates beyond the global booking limit
+    if (d > maxBookingDate) {
+      dayElem.classList.add('not-saturday');
+      dayElem._blocked = true;
+      return;
+    }
+
     if (maxCo && d > maxCo) {
       dayElem.classList.add('not-saturday');
       dayElem._blocked = true;
@@ -525,6 +539,7 @@ rangePicker = flatpickr('#rangeFlatpickr', {
   mode: 'range',
   dateFormat: 'Y-m-d',
   minDate: 'today',
+  maxDate: toISODate(maxBookingDate),
   showMonths: SHOW_MONTHS,
   positionElement: document.getElementById('datePickerRow'),
   disableMobile: true,
