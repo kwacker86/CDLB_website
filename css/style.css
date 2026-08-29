@@ -477,6 +477,7 @@ section { padding: 6rem 2rem; }
   gap: 1rem;
   text-align: center;
   transition: box-shadow 0.3s var(--ease);
+  min-height: 100%;
 }
 .region-card:hover {
   box-shadow: 0 6px 24px rgba(44,36,22,0.10);
@@ -520,11 +521,30 @@ section { padding: 6rem 2rem; }
   top: 0.1em;
 }
 
-@media (max-width: 1050px) {
+@media (max-width: 900px) {
   .regions-grid { grid-template-columns: repeat(2, 1fr); }
+  .region-card { padding: 1.6rem 1.25rem; }
 }
 @media (max-width: 560px) {
-  .regions-grid { grid-template-columns: 1fr; }
+  .regions-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .region-card {
+    padding: 1.4rem 1rem;
+    gap: 0.8rem;
+  }
+  .region-logo { height: 60px; }
+  .region-card h3 {
+    font-size: 1.08rem;
+    line-height: 1.3;
+  }
+  .region-card ul {
+    gap: 0.45rem;
+    width: 100%;
+  }
+  .region-card ul li {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    padding-left: 0.9rem;
+  }
 }
 
 /* ─── Rental ────────────────────────────────────────────── */
